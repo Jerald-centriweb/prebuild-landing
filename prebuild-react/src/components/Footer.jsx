@@ -8,7 +8,7 @@ const HomeIcon = () => (
 )
 
 export default function Footer() {
-  const ref    = useRef(null)
+  const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-20px 0px' })
 
   return (

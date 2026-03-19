@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { FadeUp } from './FadeUp'
+import { RevealBlur, FadeUp } from './FadeUp'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -30,19 +30,14 @@ const STEPS = [
 ]
 
 export default function HowItWorks() {
-  const sectionRef  = useRef(null)
+  const sectionRef = useRef(null)
   const progressRef = useRef(null)
-  const stepsRef    = useRef([])
+  const stepsRef = useRef([])
+  const activeNumRef = useRef(null)
 
-  /*
-   * GSAP ScrollTrigger — cinematic pin:
-   * The section pins while the progress line fills and each step
-   * fades + slides in from the right, one by one.
-   */
   useEffect(() => {
     const stepEls = stepsRef.current.filter(Boolean)
 
-    // Set initial state
     gsap.set(stepEls, { opacity: 0, x: 32 })
     gsap.set(progressRef.current, { scaleY: 0, transformOrigin: 'top center' })
 
@@ -51,21 +46,19 @@ export default function HowItWorks() {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top top',
-          end: `+=${stepEls.length * 220}`,
+          end: `+=${stepEls.length * 280}`,
           pin: true,
           scrub: 0.8,
           anticipatePin: 1,
         },
       })
 
-      /* Progress line fills as steps appear */
       tl.to(progressRef.current, {
         scaleY: 1,
         duration: stepEls.length,
         ease: 'none',
       }, 0)
 
-      /* Stagger each step in */
       stepEls.forEach((el, i) => {
         tl.to(el, {
           opacity: 1,
@@ -81,48 +74,52 @@ export default function HowItWorks() {
 
   return (
     <section className="s-dark how-section" id="how" ref={sectionRef}>
-      <div className="wrap-md">
-        <FadeUp>
-          <span className="eyebrow">Four steps, then it runs itself</span>
-        </FadeUp>
-        <FadeUp delay={0.08}>
-          <h2 className="h2 light">
-            Simple to start.<br />Done for you.
-          </h2>
-        </FadeUp>
-        <FadeUp delay={0.16}>
-          <p className="lead on-dark" style={{ marginTop: 16 }}>
-            You do not need to build this yourself or learn another complicated system. We configure
-            everything for your business and hand it back to you running.
-          </p>
-        </FadeUp>
+      <div className="how-layout">
+        {/* Left — large step number display */}
+        <div className="how-visual">
+          <div className="how-visual-inner">
+            <span className="how-visual-label">Step</span>
+            <div className="how-visual-num" ref={activeNumRef}>01</div>
+            <div className="how-visual-line" />
+          </div>
+        </div>
 
-        <div className="steps" style={{ position: 'relative' }}>
-          {/* Animated progress fill over the left border */}
-          <div
-            ref={progressRef}
-            style={{
-              position: 'absolute',
-              left: -1,
-              top: 0,
-              bottom: 0,
-              width: 1,
-              background: 'var(--blue-400)',
-              transformOrigin: 'top center',
-            }}
-          />
+        {/* Right — content */}
+        <div className="how-content">
+          <FadeUp>
+            <span className="eyebrow">Four steps, then it runs itself</span>
+          </FadeUp>
+          <RevealBlur delay={0.08}>
+            <h2 className="how-h2">
+              Simple to start.<br />Done for you.
+            </h2>
+          </RevealBlur>
+          <FadeUp delay={0.16}>
+            <p className="how-lead">
+              You do not need to build this yourself or learn another complicated system. We configure
+              everything for your business and hand it back to you running.
+            </p>
+          </FadeUp>
 
-          {STEPS.map((step, i) => (
+          <div className="steps-container">
             <div
-              key={step.num}
-              className="step"
-              ref={(el) => { stepsRef.current[i] = el }}
-            >
-              <div className="step-num">{step.num}</div>
-              <div className="step-title">{step.title}</div>
-              <div className="step-desc">{step.desc}</div>
-            </div>
-          ))}
+              ref={progressRef}
+              className="steps-progress"
+            />
+            {STEPS.map((step, i) => (
+              <div
+                key={step.num}
+                className="step"
+                ref={(el) => { stepsRef.current[i] = el }}
+              >
+                <div className="step-num">{step.num}</div>
+                <div className="step-body">
+                  <div className="step-title">{step.title}</div>
+                  <div className="step-desc">{step.desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

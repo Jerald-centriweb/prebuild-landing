@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 const HomeIcon = () => (
   <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
@@ -34,8 +34,8 @@ export default function Nav({ scrollTo }) {
       <ul className="nav-links">
         {[
           { label: 'Cost Calculator', id: 'calculator' },
-          { label: 'How It Works',    id: 'how' },
-          { label: 'FAQ',             id: 'faq' },
+          { label: 'How It Works', id: 'how' },
+          { label: 'FAQ', id: 'faq' },
         ].map(({ label, id }) => (
           <li key={id}>
             <a
@@ -50,7 +50,7 @@ export default function Nav({ scrollTo }) {
 
       <motion.a
         href="#final-cta"
-        className="nav-cta"
+        className={`nav-cta${scrolled ? ' visible' : ''}`}
         onClick={(e) => { e.preventDefault(); scrollTo('final-cta') }}
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.97 }}

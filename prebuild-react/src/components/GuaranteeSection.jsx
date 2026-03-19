@@ -6,11 +6,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 
 export default function GuaranteeSection() {
-  const sectionRef  = useRef(null)
-  const contentRef  = useRef(null)
-  const inView      = useInView(sectionRef, { once: true, margin: '-80px 0px' })
+  const sectionRef = useRef(null)
+  const inView = useInView(sectionRef, { once: true, margin: '-80px 0px' })
 
-  /* GSAP subtle parallax on the background grid */
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.to(sectionRef.current, {
@@ -29,18 +27,18 @@ export default function GuaranteeSection() {
 
   const container = {
     hidden: {},
-    show: { transition: { staggerChildren: 0.1 } },
+    show: { transition: { staggerChildren: 0.12 } },
   }
   const item = {
-    hidden: { opacity: 0, y: 18 },
-    show:   { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] } },
+    hidden: { opacity: 0, y: 24, filter: 'blur(6px)' },
+    show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
   }
 
   return (
     <section className="guarantee-section" ref={sectionRef}>
+      <div className="guarantee-grid" aria-hidden="true" />
       <motion.div
-        className="wrap-md"
-        ref={contentRef}
+        className="guarantee-inner"
         variants={container}
         initial="hidden"
         animate={inView ? 'show' : 'hidden'}
@@ -52,6 +50,7 @@ export default function GuaranteeSection() {
           Your first serious lead through the full process within 30 days of going live — or we go
           back in and rebuild until it does.
         </motion.h2>
+        <motion.div className="guarantee-divider" variants={item} />
         <motion.p className="guarantee-body" variants={item}>
           We configure the system, so we own the outcome. This is not a marketing line — it is how
           we operate. If it does not work in 30 days, we fix it.

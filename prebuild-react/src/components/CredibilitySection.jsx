@@ -3,10 +3,10 @@ import { motion, useInView } from 'framer-motion'
 import { FadeUp } from './FadeUp'
 
 const CRED_STATS = [
-  { num: '14',  label: 'Days avg. to go live',                    target: 14,  suffix: ''  },
-  { num: '8+',  label: 'Manual touchpoints removed per enquiry',  target: 8,   suffix: '+' },
-  { num: '0',   label: 'Tech required from you',                  target: 0,   suffix: ''  },
-  { num: '30d', label: 'Performance guarantee',                   target: 30,  suffix: 'd' },
+  { num: '14', label: 'Days avg. to go live', target: 14, suffix: '' },
+  { num: '8+', label: 'Manual touchpoints removed per enquiry', target: 8, suffix: '+' },
+  { num: '0', label: 'Tech required from you', target: 0, suffix: '' },
+  { num: '30d', label: 'Performance guarantee', target: 30, suffix: 'd' },
 ]
 
 function AnimatedStat({ stat, inView }) {
@@ -41,24 +41,18 @@ function AnimatedStat({ stat, inView }) {
 
 export default function CredibilitySection() {
   const statsRef = useRef(null)
-  const inView   = useInView(statsRef, { once: true, margin: '-40px 0px' })
+  const inView = useInView(statsRef, { once: true, margin: '-40px 0px' })
 
   return (
-    <section className="cred-section">
-      <div className="wrap">
+    <section className="cred-section" id="credibility">
+      <div className="wrap-lg">
         <div className="cred-inner">
           <FadeUp className="cred-text">
-            <span className="eyebrow-tag" style={{ marginBottom: 20 }}>About PreBuild</span>
+            <span className="eyebrow-tag">About PreBuild</span>
             <p>
               PreBuild was designed around the{' '}
               <strong>real quoting and pre-construction bottlenecks</strong> that residential builders
               face — not the problems that look good in a software brochure.
-            </p>
-            <p>
-              The system is built on the same process used to handle enquiry, qualification, and
-              commitment across builders working in custom homes, renovations, and extensions. It works
-              because it mirrors what good builders already do in their best conversations — and
-              automates everything else around it.
             </p>
           </FadeUp>
 

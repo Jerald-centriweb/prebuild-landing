@@ -1,71 +1,77 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import { FadeUp } from './FadeUp'
+import { RevealBlur, FadeUp } from './FadeUp'
 
 const OUTCOMES = [
   {
-    n: 'OUTCOME 01',
+    num: '01',
     before: 'Enquiries sitting unanswered for days',
-    title: 'Every enquiry gets a professional first response — even when you are flat out on site',
+    after: 'Every enquiry gets a professional first response — even when you are flat out on site',
     desc: 'A structured first response fires immediately — so homeowners feel taken care of before you pick up the phone.',
   },
   {
-    n: 'OUTCOME 02',
+    num: '02',
     before: 'Spending hours before knowing if it\'s real',
-    title: 'You know which leads are worth your time in the first conversation — not the third',
+    after: 'You know which leads are worth your time in the first conversation — not the third',
     desc: 'Every prospect moves through the same qualification process, so your attention goes to real opportunities from day one.',
   },
   {
-    n: 'OUTCOME 03',
+    num: '03',
     before: 'Asking for money felt uncomfortable',
-    title: 'The preliminary commitment conversation feels natural — the process earns it for you',
+    after: 'The preliminary commitment conversation feels natural — the process earns it for you',
     desc: 'By the time you ask, the process has already established your value — serious prospects expect it, the rest never make it that far.',
   },
 ]
 
-export default function SolutionSection({ scrollTo }) {
-  const cardsRef = useRef(null)
-  const inView   = useInView(cardsRef, { once: true, margin: '-60px 0px' })
+function OutcomeRow({ outcome }) {
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true, margin: '-60px 0px' })
 
   return (
-    <section className="s-white solution-section">
-      <div className="wrap">
+    <motion.div
+      ref={ref}
+      className="outcome-row"
+      initial={{ opacity: 0, y: 28 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+    >
+      <div className="outcome-before-col">
+        <span className="outcome-num">{outcome.num}</span>
+        <span className="outcome-before-text">{outcome.before}</span>
+      </div>
+      <div className="outcome-arrow" aria-hidden="true">→</div>
+      <div className="outcome-after-col">
+        <h3 className="outcome-after-title">{outcome.after}</h3>
+        <p className="outcome-after-desc">{outcome.desc}</p>
+      </div>
+    </motion.div>
+  )
+}
+
+export default function SolutionSection({ scrollTo }) {
+  return (
+    <section className="s-light solution-section" id="solution">
+      <div className="wrap-lg">
         <FadeUp>
           <span className="eyebrow-tag">Done for you, start to finish</span>
         </FadeUp>
-        <FadeUp delay={0.08}>
-          <h2 className="h2 dark" style={{ marginTop: 0 }}>
-            We set it up.<br />You build homes.
+        <RevealBlur delay={0.08}>
+          <h2 className="solution-h2">
+            We set it up.<br />
+            <span className="accent">You build homes.</span>
           </h2>
-        </FadeUp>
+        </RevealBlur>
         <FadeUp delay={0.16}>
-          <p className="lead">
+          <p className="solution-lead">
             PreBuild is a done-for-you pre-construction system built around how your business already
             works. Every enquiry gets a clear path. Serious prospects move toward a commitment. The
             wrong ones self-select out early.
           </p>
         </FadeUp>
 
-        <div className="outcome-cards" ref={cardsRef}>
-          {OUTCOMES.map((card, i) => (
-            <motion.div
-              key={card.n}
-              className="outcome-card"
-              initial={{ opacity: 0, y: 24 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.52, delay: i * 0.13, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{
-                y: -4,
-                borderColor: 'var(--blue-200)',
-                boxShadow: '0 12px 36px rgba(17,24,32,0.07)',
-                transition: { duration: 0.25 },
-              }}
-            >
-              <span className="outcome-n">{card.n}</span>
-              <span className="outcome-before">{card.before}</span>
-              <div className="outcome-title">{card.title}</div>
-              <div className="outcome-desc">{card.desc}</div>
-            </motion.div>
+        <div className="outcome-list">
+          {OUTCOMES.map((outcome) => (
+            <OutcomeRow key={outcome.num} outcome={outcome} />
           ))}
         </div>
       </div>

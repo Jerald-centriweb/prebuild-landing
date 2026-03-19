@@ -1,6 +1,6 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import { FadeUp } from './FadeUp'
+import { RevealBlur, FadeUp } from './FadeUp'
 
 const YES_ITEMS = [
   'Residential custom builder, 5–30 homes/year',
@@ -17,13 +17,13 @@ const NO_ITEMS = [
   'Want results without a short onboarding period',
 ]
 
-function CheckList({ items, mark, markClass, colClass, title }) {
+function CheckList({ items, mark, markClass, title }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-40px 0px' })
 
   return (
     <div className="who-col" ref={ref}>
-      <div className={`who-col-title ${colClass}`}>{title}</div>
+      <div className={`who-col-title ${markClass}`}>{title}</div>
       {items.map((text, i) => (
         <motion.div
           key={text}
@@ -42,19 +42,19 @@ function CheckList({ items, mark, markClass, colClass, title }) {
 
 export default function WhoSection() {
   return (
-    <section className="s-light who-section" style={{ paddingTop: 0, borderTop: 'var(--line)' }}>
-      <div className="wrap">
+    <section className="s-light who-section" id="who">
+      <div className="wrap-lg">
         <FadeUp>
           <span className="eyebrow-tag">Is this for you?</span>
         </FadeUp>
-        <FadeUp delay={0.08}>
-          <h2 className="h2 dark" style={{ marginTop: 0 }}>
+        <RevealBlur delay={0.08}>
+          <h2 className="who-h2">
             Built for residential builders<br />
             tired of quoting blind.
           </h2>
-        </FadeUp>
+        </RevealBlur>
         <FadeUp delay={0.16}>
-          <p className="lead">
+          <p className="who-lead">
             This is a fit if you are regularly dealing with unqualified enquiries, inconsistent
             follow-up, or too much free quoting before you know who is actually serious.
           </p>
@@ -65,14 +65,12 @@ export default function WhoSection() {
             items={YES_ITEMS}
             mark="✓"
             markClass="mk-y"
-            colClass="col-yes"
             title="Right for you if..."
           />
           <CheckList
             items={NO_ITEMS}
             mark="—"
             markClass="mk-n"
-            colClass="col-no"
             title="Not right for you if..."
           />
         </div>

@@ -1,110 +1,125 @@
-import { useState, useCallback, useRef } from 'react'
-import { motion, useSpring, useMotionValue, useTransform, animate, useInView } from 'framer-motion'
-import { FadeUp } from './FadeUp'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { RevealBlur, FadeUp } from './FadeUp'
 
-function useAnimatedNumber(initial) {
-  const mv = useMotionValue(initial)
-  return mv
-}
-
-function AnimatedValue({ motionValue, prefix = '', suffix = '' }) {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true })
-
-  return (
-    <span ref={ref} className="metric-value" style={{ display: 'block' }}>
-      <motion.span>
-        {motionValue}
-      </motion.span>
-    </span>
-  )
-}
-
-/* Format number with locale commas */
 const fmt = (n) => Math.round(n).toLocaleString()
 
 export default function CalculatorSection({ scrollTo }) {
-  const [quotes,    setQuotes]    = useState(30)
-  const [won,       setWon]       = useState(8)
+  const [quotes, setQuotes] = useState(30)
+  const [won, setWon] = useState(8)
   const [hoursEach, setHoursEach] = useState(20)
-  const [rate,      setRate]      = useState(150)
+  const [rate, setRate] = useState(150)
+
+  const [unlocked, setUnlocked] = useState(false)
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '' })
+  const [submitting, setSubmitting] = useState(false)
 
   const lost = Math.max(0, quotes - won)
-  const hrs  = lost * hoursEach
+  const hrs = lost * hoursEach
   const cost = hrs * rate
   const perj = won > 0 ? Math.round((quotes * hoursEach * rate) / won) : 0
 
+  const severity = cost > 150000 ? 'critical' : cost > 80000 ? 'high' : 'moderate'
+
+  const handleUnlock = (e) => {
+    e.preventDefault()
+    if (!formData.name || !formData.email || !formData.phone) return
+    setSubmitting(true)
+
+    /* Submit to GHL webhook — replace URL with your actual GHL webhook */
+    fetch('https://services.leadconnectorhq.com/hooks/YOUR_WEBHOOK_ID', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...formData,
+        source: 'calculator',
+        quotes_per_year: quotes,
+        jobs_won: won,
+        hours_per_quote: hoursEach,
+        hourly_rate: rate,
+        annual_hours_lost: hrs,
+        annual_cost_lost: cost,
+        cost_per_job: perj,
+      }),
+    }).catch(() => {})
+
+    setTimeout(() => {
+      setUnlocked(true)
+      setSubmitting(false)
+    }, 800)
+  }
+
   return (
-    <section className="s-white calc-section" id="calculator">
-      <div className="wrap">
-        <div className="calc-intro">
+    <section className="calc-section" id="calculator">
+      <div className="wrap-lg">
+        <div className="calc-header">
           <FadeUp>
             <span className="eyebrow-tag">See the real number</span>
           </FadeUp>
-          <FadeUp delay={0.08}>
-            <h2 className="h2 dark" style={{ marginTop: 0 }}>
+          <RevealBlur delay={0.08}>
+            <h2 className="calc-h2">
               See what unqualified<br />
               quoting is actually<br />
-              costing you.
+              <span className="accent">costing you.</span>
             </h2>
-          </FadeUp>
+          </RevealBlur>
           <FadeUp delay={0.16}>
-            <p className="lead" style={{ marginBottom: 0 }}>
+            <p className="calc-lead">
               Most builders never stop to calculate it. Adjust the sliders and see how much time and
               money disappears each year on quotes that don't convert.
             </p>
           </FadeUp>
         </div>
 
-        <FadeUp delay={0.2} style={{ marginTop: 44 }}>
-          <div className="calc-module">
-            <div className="calc-cols">
-
-              {/* INPUTS */}
-              <div className="calc-inputs">
-                {[
-                  { id: 'c1', label: 'Quotes per year',    val: quotes,    set: setQuotes,    min: 5,  max: 100, step: 1,  fmt: (v) => v        },
-                  { id: 'c2', label: 'Jobs won per year',  val: won,       set: setWon,       min: 1,  max: 50,  step: 1,  fmt: (v) => v        },
-                  { id: 'c3', label: 'Hours per quote',    val: hoursEach, set: setHoursEach, min: 5,  max: 60,  step: 1,  fmt: (v) => `${v} hrs` },
-                  { id: 'c4', label: 'Hourly rate (AUD)',  val: rate,      set: setRate,      min: 80, max: 400, step: 10, fmt: (v) => `$${v}`  },
-                ].map(({ id, label, val, set, min, max, step, fmt: fmtVal }) => (
-                  <div className="calc-field" key={id}>
-                    <div className="calc-field-row">
-                      <label className="calc-label" htmlFor={id}>{label}</label>
-                      <motion.span
-                        className="calc-val"
-                        key={fmtVal(val)}
-                        initial={{ opacity: 0.6, y: -4 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        {fmtVal(val)}
-                      </motion.span>
-                    </div>
-                    <input
-                      type="range"
-                      id={id}
-                      min={min}
-                      max={max}
-                      step={step}
-                      value={val}
-                      onChange={(e) => set(+e.target.value)}
-                    />
+        <FadeUp delay={0.2}>
+          <div className="calc-layout">
+            {/* INPUTS */}
+            <div className="calc-inputs">
+              {[
+                { id: 'c1', label: 'Quotes per year', val: quotes, set: setQuotes, min: 5, max: 100, step: 1, fmtVal: (v) => v },
+                { id: 'c2', label: 'Jobs won per year', val: won, set: setWon, min: 1, max: 50, step: 1, fmtVal: (v) => v },
+                { id: 'c3', label: 'Hours per quote', val: hoursEach, set: setHoursEach, min: 5, max: 60, step: 1, fmtVal: (v) => `${v} hrs` },
+                { id: 'c4', label: 'Hourly rate (AUD)', val: rate, set: setRate, min: 80, max: 400, step: 10, fmtVal: (v) => `$${v}` },
+              ].map(({ id, label, val, set, min, max, step, fmtVal }) => (
+                <div className="calc-field" key={id}>
+                  <div className="calc-field-row">
+                    <label className="calc-label" htmlFor={id}>{label}</label>
+                    <motion.span
+                      className="calc-val"
+                      key={fmtVal(val)}
+                      initial={{ opacity: 0.6, y: -4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      {fmtVal(val)}
+                    </motion.span>
                   </div>
-                ))}
-              </div>
+                  <input
+                    type="range"
+                    id={id}
+                    min={min}
+                    max={max}
+                    step={step}
+                    value={val}
+                    onChange={(e) => set(+e.target.value)}
+                  />
+                </div>
+              ))}
+            </div>
 
-              {/* OUTPUTS */}
-              <div className="calc-outputs">
-                {[
-                  { id: 'r1', label: 'Annual hours lost to wasted quoting', value: hrs,  sub: 'hours / year on quotes that didn\'t convert', cls: '' },
-                  { id: 'r2', label: 'Cost of wasted quoting time',         value: cost, sub: 'AUD / year in unrecoverable capacity',        cls: 'amber', prefix: '$' },
-                  { id: 'r3', label: 'Cost to win each job',                value: perj, sub: 'in quoting time per signed project',          cls: 'red',   prefix: '$' },
-                ].map(({ id, label, value, sub, cls, prefix = '' }, i) => (
-                  <div key={id}>
-                    {i > 0 && <div className="metric-rule" />}
-                    <div className="metric">
-                      <div className="metric-label">{label}</div>
+            {/* OUTPUTS — dramatic numbers with lead gate */}
+            <div className={`calc-outputs ${severity}`}>
+              <div className="calc-outputs-grid" aria-hidden="true" />
+              {[
+                { id: 'r1', label: 'Annual hours lost to wasted quoting', value: hrs, sub: 'hours / year on quotes that didn\'t convert', cls: '' },
+                { id: 'r2', label: 'Cost of wasted quoting time', value: cost, sub: 'AUD / year in unrecoverable capacity', cls: 'amber', prefix: '$' },
+                { id: 'r3', label: 'Cost to win each job', value: perj, sub: 'in quoting time per signed project', cls: 'red', prefix: '$' },
+              ].map(({ id, label, value, sub, cls, prefix = '' }, i) => (
+                <div key={id} className="metric-block">
+                  {i > 0 && <div className="metric-rule" />}
+                  <div className="metric">
+                    <div className="metric-label">{label}</div>
+                    <div className={`metric-value-wrap${!unlocked && i > 0 ? ' gated' : ''}`}>
                       <motion.div
                         className={`metric-value${cls ? ` ${cls}` : ''}`}
                         key={value}
@@ -114,12 +129,57 @@ export default function CalculatorSection({ scrollTo }) {
                       >
                         {prefix}{fmt(value)}
                       </motion.div>
-                      <div className="metric-sub">{sub}</div>
+                      {!unlocked && i > 0 && (
+                        <div className="metric-blur-overlay" />
+                      )}
                     </div>
+                    <div className="metric-sub">{sub}</div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
 
+              {/* Lead capture gate */}
+              <AnimatePresence>
+                {!unlocked && (
+                  <motion.div
+                    className="calc-gate"
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -16 }}
+                    transition={{ duration: 0.4 }}
+                  >
+                    <p className="calc-gate-text">
+                      Enter your details to unlock your full cost breakdown
+                    </p>
+                    <form className="calc-gate-form" onSubmit={handleUnlock}>
+                      <input
+                        type="text"
+                        placeholder="Your name"
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        required
+                      />
+                      <input
+                        type="email"
+                        placeholder="Email address"
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        required
+                      />
+                      <input
+                        type="tel"
+                        placeholder="Phone number"
+                        value={formData.phone}
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        required
+                      />
+                      <button type="submit" className="btn-primary" disabled={submitting}>
+                        {submitting ? 'Calculating...' : 'See My Full Results →'}
+                      </button>
+                    </form>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </FadeUp>

@@ -35,7 +35,7 @@ export default function FinalCTA({ scrollTo }) {
         </motion.h2>
 
         <motion.p className="final-sub" variants={item}>
-          Book a 20-minute conversation. We will look at your current front-end process, show you
+          Apply for a consult. We will look at your current front-end process, show you
           exactly how the system works for a builder like you, and tell you plainly whether it is the
           right fit.
         </motion.p>
@@ -43,12 +43,13 @@ export default function FinalCTA({ scrollTo }) {
         <motion.a
           href="#"
           className="btn-primary btn-final"
+          onClick={(e) => { e.preventDefault(); window.dispatchEvent(new Event('open-survey')) }}
           variants={item}
           whileHover={{ background: 'var(--blue-600)', y: -2, boxShadow: '0 8px 40px rgba(47,127,212,0.4)' }}
           whileTap={{ scale: 0.97 }}
           transition={{ type: 'spring', stiffness: 400, damping: 20 }}
         >
-          Book a 20-Minute Conversation →
+          Apply for a Consult →
         </motion.a>
 
         <motion.p className="final-trust" variants={item}>

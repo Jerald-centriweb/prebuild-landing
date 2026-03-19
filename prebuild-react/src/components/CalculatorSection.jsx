@@ -11,7 +11,7 @@ export default function CalculatorSection({ scrollTo }) {
   const [rate, setRate] = useState(150)
 
   const [unlocked, setUnlocked] = useState(false)
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '' })
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', company: '', website: '' })
   const [submitting, setSubmitting] = useState(false)
 
   const lost = Math.max(0, quotes - won)
@@ -26,22 +26,24 @@ export default function CalculatorSection({ scrollTo }) {
     if (!formData.name || !formData.email || !formData.phone) return
     setSubmitting(true)
 
-    /* Submit to GHL webhook — replace URL with your actual GHL webhook */
-    fetch('https://services.leadconnectorhq.com/hooks/YOUR_WEBHOOK_ID', {
+    /* Submit to n8n webhook */
+    fetch('https://n8n.centriweb.com/webhook/b74e323d-2237-42d0-87a8-e9c6133f8dd9', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         ...formData,
-        source: 'calculator',
-        quotes_per_year: quotes,
-        jobs_won: won,
-        hours_per_quote: hoursEach,
-        hourly_rate: rate,
-        annual_hours_lost: hrs,
-        annual_cost_lost: cost,
-        cost_per_job: perj,
+        source: 'prebuild_calculator',
+        metrics: {
+          quotes_per_year: quotes,
+          jobs_won: won,
+          hours_per_quote: hoursEach,
+          hourly_rate: rate,
+          annual_hours_lost: hrs,
+          annual_cost_lost: cost,
+          cost_per_job: perj,
+        }
       }),
-    }).catch(() => {})
+    }).catch((err) => console.error("Webhook failed:", err))
 
     setTimeout(() => {
       setUnlocked(true)
@@ -172,6 +174,19 @@ export default function CalculatorSection({ scrollTo }) {
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         required
+                      />
+                      <input
+                        type="text"
+                        placeholder="Company name"
+                        value={formData.company}
+                        onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                        required
+                      />
+                      <input
+                        type="url"
+                        placeholder="Website URL (Optional)"
+                        value={formData.website}
+                        onChange={(e) => setFormData({ ...formData, website: e.target.value })}
                       />
                       <button type="submit" className="btn-primary" disabled={submitting}>
                         {submitting ? 'Calculating...' : 'See My Full Results →'}

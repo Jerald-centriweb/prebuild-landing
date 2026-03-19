@@ -1,12 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 
-const HomeIcon = () => (
-  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
-    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-  </svg>
-)
-
 export default function Nav({ scrollTo }) {
   const [scrolled, setScrolled] = useState(false)
 
@@ -25,10 +19,22 @@ export default function Nav({ scrollTo }) {
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
     >
       <a href="#" className="nav-logo">
-        <div className="nav-logo-mark">
-          <HomeIcon />
+        <div className="nav-logo-wrap">
+          <motion.img
+            src="/images/logo-icon.png"
+            alt="PreBuild"
+            className="nav-logo-icon"
+            animate={{ opacity: scrolled ? 0 : 1, scale: scrolled ? 0.88 : 1 }}
+            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+          />
+          <motion.img
+            src="/images/logo-wordmark.png"
+            alt="PreBuild"
+            className="nav-logo-wordmark"
+            animate={{ opacity: scrolled ? 1 : 0, scale: scrolled ? 1 : 0.88 }}
+            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+          />
         </div>
-        Pre<span>Build</span>
       </a>
 
       <ul className="nav-links">
@@ -51,12 +57,12 @@ export default function Nav({ scrollTo }) {
       <motion.a
         href="#final-cta"
         className={`nav-cta${scrolled ? ' visible' : ''}`}
-        onClick={(e) => { e.preventDefault(); scrollTo('final-cta') }}
+        onClick={(e) => { e.preventDefault(); window.dispatchEvent(new Event('open-survey')) }}
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.97 }}
         transition={{ type: 'spring', stiffness: 400, damping: 20 }}
       >
-        Book a Conversation →
+        Apply for a Consult →
       </motion.a>
     </motion.nav>
   )

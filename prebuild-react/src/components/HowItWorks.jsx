@@ -57,6 +57,14 @@ export default function HowItWorks() {
         scaleY: 1,
         duration: stepEls.length,
         ease: 'none',
+        onUpdate: function() {
+          if (activeNumRef.current) {
+            const progress = this.progress()
+            // Map 0-1 progress to steps 1-4
+            const step = Math.min(STEPS.length, Math.max(1, Math.ceil(progress * STEPS.length)))
+            activeNumRef.current.innerText = `0${step}`
+          }
+        }
       }, 0)
 
       stepEls.forEach((el, i) => {

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion'
+import { motion, useScroll, useTransform, useMotionValueEvent, useSpring } from 'framer-motion'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -36,17 +36,29 @@ export default function Hero({ scrollTo }) {
     offset: ['start start', 'end start'],
   })
 
+  // Add a highly fluid spring physics layer to glide through video scroll updates smoothly
+  const smoothProgress = useSpring(scrollYProgress, { 
+    stiffness: 40, 
+    damping: 20,
+    mass: 1 
+  })
+
   /* Video scrub: map scroll to video currentTime */
-  useMotionValueEvent(scrollYProgress, 'change', (v) => {
+  useMotionValueEvent(smoothProgress, 'change', (v) => {
     if (videoRef.current && videoReady) {
       const duration = videoRef.current.duration || 10
-      videoRef.current.currentTime = v * duration * 0.8
+      window.requestAnimationFrame(() => {
+        if (videoRef.current) {
+          videoRef.current.currentTime = v * duration * 0.8
+        }
+      })
     }
   })
 
   /* Parallax transforms */
-  const heroContentY = useTransform(scrollYProgress, [0, 0.7], [0, -80])
   const heroContentOpacity = useTransform(scrollYProgress, [0.3, 0.6], [1, 0])
+  const heroContentScale = useTransform(scrollYProgress, [0, 0.6], [1, 0.85])
+  const heroContentY = useTransform(scrollYProgress, [0, 0.6], [0, -120])
   const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.15])
   const videoOpacity = useTransform(scrollYProgress, [0, 0.7, 1], [0.35, 0.2, 0.08])
 
@@ -122,10 +134,10 @@ export default function Hero({ scrollTo }) {
         {/* Blueprint grid — subtle background texture */}
         <div className="hero-grid" aria-hidden="true" />
 
-        {/* Main hero content — parallaxes up and fades */}
+        {/* Main hero content — fades and beautifully compresses with scroll */}
         <motion.div
           className="hero-content"
-          style={{ y: heroContentY, opacity: heroContentOpacity }}
+          style={{ opacity: heroContentOpacity, scale: heroContentScale, y: heroContentY }}
         >
           <motion.span className="eyebrow" {...eyebrowAnim}>
             For Australian residential builders · 5–30 homes / year
@@ -160,12 +172,12 @@ export default function Hero({ scrollTo }) {
             <motion.a
               href="#final-cta"
               className="btn-primary btn-hero"
-              onClick={(e) => { e.preventDefault(); scrollTo('final-cta') }}
+              onClick={(e) => { e.preventDefault(); window.dispatchEvent(new Event('open-survey')) }}
               whileHover={{ background: 'var(--blue-600)', y: -2 }}
               whileTap={{ scale: 0.97 }}
               transition={{ type: 'spring', stiffness: 400, damping: 20 }}
             >
-              Book a 20-Minute Conversation →
+              Apply for a Consult →
             </motion.a>
 
             <span className="hero-trust">

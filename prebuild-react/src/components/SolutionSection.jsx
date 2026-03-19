@@ -30,17 +30,17 @@ function OutcomeRow({ outcome }) {
   return (
     <motion.div
       ref={ref}
-      className="outcome-row"
+      className="outcome-card"
       initial={{ opacity: 0, y: 28 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
     >
-      <div className="outcome-before-col">
-        <span className="outcome-num">{outcome.num}</span>
-        <span className="outcome-before-text">{outcome.before}</span>
+      <div className="outcome-before-panel">
+        <div className="outcome-before-label">The Old Way</div>
+        <div className="outcome-before-text">{outcome.before}</div>
       </div>
-      <div className="outcome-arrow" aria-hidden="true">→</div>
-      <div className="outcome-after-col">
+      <div className="outcome-after-panel">
+        <div className="outcome-after-label">PreBuild Standard</div>
         <h3 className="outcome-after-title">{outcome.after}</h3>
         <p className="outcome-after-desc">{outcome.desc}</p>
       </div>
@@ -50,7 +50,7 @@ function OutcomeRow({ outcome }) {
 
 export default function SolutionSection({ scrollTo }) {
   return (
-    <section className="s-light solution-section" id="solution">
+    <section className="s-dark solution-section" id="solution">
       <div className="wrap-lg">
         <FadeUp>
           <span className="eyebrow-tag">Done for you, start to finish</span>

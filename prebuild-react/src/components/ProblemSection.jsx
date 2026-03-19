@@ -1,5 +1,5 @@
-import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { RevealBlur, FadeUp } from './FadeUp'
 
 const PAIN_POINTS = [
@@ -20,22 +20,30 @@ const PAIN_POINTS = [
   },
 ]
 
-function PainBlock({ point }) {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-60px 0px' })
+function PainCard({ point }) {
+  const cardRef = useRef(null)
+  
+  // Track scroll progress of this specific card as it moves through the viewport
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ['start 85%', 'center center'] // Starts animating when top hits 85% of screen
+  })
+  
+  // Tie opacity and scale directly to the scroll progress
+  const opacity = useTransform(scrollYProgress, [0, 1], [0.3, 1])
+  const scale = useTransform(scrollYProgress, [0, 1], [0.95, 1])
+  const y = useTransform(scrollYProgress, [0, 1], [40, 0])
 
   return (
-    <motion.div
-      ref={ref}
-      className="pain-block"
-      initial={{ opacity: 0, y: 28 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.65, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+    <motion.div 
+      ref={cardRef}
+      className="pain-card"
+      style={{ opacity, scale, y }}
     >
-      <div className="pain-block-num">{point.num}</div>
-      <div className="pain-block-content">
-        <h3 className="pain-block-title">{point.title}</h3>
-        <p className="pain-block-desc">{point.desc}</p>
+      <div className="pain-card-num">{point.num}</div>
+      <div className="pain-card-content">
+        <h3 className="pain-card-title">{point.title}</h3>
+        <p className="pain-card-desc">{point.desc}</p>
       </div>
     </motion.div>
   )
@@ -43,30 +51,34 @@ function PainBlock({ point }) {
 
 export default function ProblemSection() {
   return (
-    <section className="s-light problem-section" id="problem">
+    <section className="problem-section-redesigned" id="problem">
       <div className="wrap-lg">
-        <div className="problem-header">
-          <FadeUp>
-            <span className="eyebrow-tag">Sound familiar?</span>
-          </FadeUp>
-          <RevealBlur delay={0.08}>
-            <h2 className="problem-h2">
-              Most builders don't have a quoting problem.{' '}
-              <br />They have a{' '}
-              <span className="accent">qualification</span> problem.
-            </h2>
-          </RevealBlur>
-          <FadeUp delay={0.2}>
-            <p className="problem-lead">
-              By the time you find out who was serious, you have already lost hours you do not get back.
-            </p>
-          </FadeUp>
-        </div>
+        <div className="problem-split-layout">
+          {/* Left Sticky Column */}
+          <div className="problem-sticky-left">
+            <FadeUp>
+              <span className="eyebrow-tag">Sound familiar?</span>
+            </FadeUp>
+            <RevealBlur delay={0.08}>
+              <h2 className="problem-h2-large">
+                Most builders don't have a quoting problem.{' '}
+                <br />They have a{' '}
+                <span className="accent">qualification</span> problem.
+              </h2>
+            </RevealBlur>
+            <FadeUp delay={0.2}>
+              <p className="problem-lead-dark">
+                By the time you find out who was serious, you have already lost hours you do not get back.
+              </p>
+            </FadeUp>
+          </div>
 
-        <div className="problem-list">
-          {PAIN_POINTS.map((point) => (
-            <PainBlock key={point.num} point={point} />
-          ))}
+          {/* Right Scrolling Column */}
+          <div className="problem-cards-right">
+            {PAIN_POINTS.map((point) => (
+              <PainCard key={point.num} point={point} />
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -12,6 +12,7 @@ import GuaranteeSection from './components/GuaranteeSection'
 import FinalCTA from './components/FinalCTA'
 import Footer from './components/Footer'
 import SurveyModal from './components/SurveyModal'
+import BookingModal from './components/BookingModal'
 
 export default function App() {
   const scrollTo = (id) => {
@@ -34,6 +35,7 @@ export default function App() {
       <FinalCTA scrollTo={scrollTo} />
       <Footer />
       <SurveyModal />
+      <BookingModal />
     </>
   )
 }

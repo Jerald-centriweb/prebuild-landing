@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "prebuild-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "prebuild-react"],
+      "port": 5173,
+      "autoPort": false
+    }
+  ]
+}

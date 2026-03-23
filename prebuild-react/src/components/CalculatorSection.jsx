@@ -1,32 +1,50 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { RevealBlur, FadeUp } from './FadeUp'
 
 const fmt = (n) => Math.round(n).toLocaleString()
+const pct = (val, min, max) => ((val - min) / (max - min)) * 100
+
+const SLIDERS = [
+  { id: 'c1', label: 'Quotes per year', min: 5, max: 100, step: 1, format: (v) => v },
+  { id: 'c2', label: 'Jobs won per year', min: 1, max: 50, step: 1, format: (v) => v },
+  { id: 'c3', label: 'Hours per quote', min: 5, max: 60, step: 1, format: (v) => `${v} hrs` },
+  { id: 'c4', label: 'Hourly rate (AUD)', min: 80, max: 400, step: 10, format: (v) => `$${v}` },
+]
 
 export default function CalculatorSection({ scrollTo }) {
-  const [quotes, setQuotes] = useState(30)
-  const [won, setWon] = useState(8)
-  const [hoursEach, setHoursEach] = useState(20)
-  const [rate, setRate] = useState(150)
-
+  const [values, setValues] = useState({ c1: 30, c2: 8, c3: 20, c4: 150 })
   const [unlocked, setUnlocked] = useState(false)
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', company: '', website: '' })
   const [submitting, setSubmitting] = useState(false)
 
-  const lost = Math.max(0, quotes - won)
-  const hrs = lost * hoursEach
-  const cost = hrs * rate
-  const perj = won > 0 ? Math.round((quotes * hoursEach * rate) / won) : 0
+  const updateValue = (id, val) => setValues((prev) => ({ ...prev, [id]: val }))
 
-  const severity = cost > 150000 ? 'critical' : cost > 80000 ? 'high' : 'moderate'
+  const metrics = useMemo(() => {
+    const lost = Math.max(0, values.c1 - values.c2)
+    const hrs = lost * values.c3
+    const cost = hrs * values.c4
+    const perJob = values.c2 > 0 ? Math.round((values.c1 * values.c3 * values.c4) / values.c2) : 0
+    const winRate = values.c2 > 0 ? Math.round((values.c2 / values.c1) * 100) : 0
+    const severity = cost > 150000 ? 'critical' : cost > 80000 ? 'high' : 'moderate'
+    const improvedWinRate = Math.min(winRate + 15, 85)
+    const improvedWon = Math.round(values.c1 * (improvedWinRate / 100))
+    const improvedLost = Math.max(0, values.c1 - improvedWon)
+    const improvedHrs = improvedLost * (values.c3 * 0.4)
+    const savedHrs = hrs - improvedHrs
+    const savedCost = savedHrs * values.c4
+    return { lost, hrs, cost, perJob, winRate, severity, savedHrs, savedCost, improvedWinRate }
+  }, [values])
+
+  const ringPct = Math.min(metrics.cost / 300000, 1)
+  const ringCircumference = 2 * Math.PI * 90
+  const ringOffset = ringCircumference * (1 - ringPct)
 
   const handleUnlock = (e) => {
     e.preventDefault()
     if (!formData.name || !formData.email || !formData.phone) return
     setSubmitting(true)
 
-    /* Submit to n8n webhook */
     fetch('https://n8n.centriweb.com/webhook/b74e323d-2237-42d0-87a8-e9c6133f8dd9', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -34,16 +52,18 @@ export default function CalculatorSection({ scrollTo }) {
         ...formData,
         source: 'prebuild_calculator',
         metrics: {
-          quotes_per_year: quotes,
-          jobs_won: won,
-          hours_per_quote: hoursEach,
-          hourly_rate: rate,
-          annual_hours_lost: hrs,
-          annual_cost_lost: cost,
-          cost_per_job: perj,
+          quotes_per_year: values.c1,
+          jobs_won: values.c2,
+          hours_per_quote: values.c3,
+          hourly_rate: values.c4,
+          annual_hours_lost: metrics.hrs,
+          annual_cost_lost: metrics.cost,
+          cost_per_job: metrics.perJob,
+          win_rate: metrics.winRate,
+          projected_savings: metrics.savedCost,
         }
       }),
-    }).catch((err) => console.error("Webhook failed:", err))
+    }).catch((err) => console.error('Webhook failed:', err))
 
     setTimeout(() => {
       setUnlocked(true)
@@ -51,12 +71,14 @@ export default function CalculatorSection({ scrollTo }) {
     }, 800)
   }
 
+  const severityColor = metrics.severity === 'critical' ? 'var(--red-400)' : metrics.severity === 'high' ? 'var(--amber-400)' : 'var(--blue-400)'
+
   return (
     <section className="calc-section" id="calculator">
       <div className="wrap-lg">
         <div className="calc-header">
           <FadeUp>
-            <span className="eyebrow-tag">See the real number</span>
+            <span className="eyebrow-tag">Free tool · 30 seconds</span>
           </FadeUp>
           <RevealBlur delay={0.08}>
             <h2 className="calc-h2">
@@ -67,131 +89,215 @@ export default function CalculatorSection({ scrollTo }) {
           </RevealBlur>
           <FadeUp delay={0.16}>
             <p className="calc-lead">
-              Most builders never stop to calculate it. Adjust the sliders and see how much time and
-              money disappears each year on quotes that don't convert.
+              Adjust the sliders to match your business. The results might change how you
+              look at your next enquiry.
             </p>
           </FadeUp>
         </div>
 
         <FadeUp delay={0.2}>
-          <div className="calc-layout">
-            {/* INPUTS */}
-            <div className="calc-inputs">
-              {[
-                { id: 'c1', label: 'Quotes per year', val: quotes, set: setQuotes, min: 5, max: 100, step: 1, fmtVal: (v) => v },
-                { id: 'c2', label: 'Jobs won per year', val: won, set: setWon, min: 1, max: 50, step: 1, fmtVal: (v) => v },
-                { id: 'c3', label: 'Hours per quote', val: hoursEach, set: setHoursEach, min: 5, max: 60, step: 1, fmtVal: (v) => `${v} hrs` },
-                { id: 'c4', label: 'Hourly rate (AUD)', val: rate, set: setRate, min: 80, max: 400, step: 10, fmtVal: (v) => `$${v}` },
-              ].map(({ id, label, val, set, min, max, step, fmtVal }) => (
-                <div className="calc-field" key={id}>
-                  <div className="calc-field-row">
-                    <label className="calc-label" htmlFor={id}>{label}</label>
+          <div className={`calc-panel ${metrics.severity}`}>
+            {/* Left: Sliders */}
+            <div className="calc-sliders">
+              {SLIDERS.map((s) => (
+                <div className="calc-slider-group" key={s.id}>
+                  <div className="calc-slider-top">
+                    <label className="calc-slider-label" htmlFor={s.id}>{s.label}</label>
                     <motion.span
-                      className="calc-val"
-                      key={fmtVal(val)}
+                      className="calc-slider-value"
+                      key={values[s.id]}
                       initial={{ opacity: 0.6, y: -4 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.2 }}
                     >
-                      {fmtVal(val)}
+                      {s.format(values[s.id])}
                     </motion.span>
                   </div>
-                  <input
-                    type="range"
-                    id={id}
-                    min={min}
-                    max={max}
-                    step={step}
-                    value={val}
-                    onChange={(e) => set(+e.target.value)}
-                  />
+                  <div className="calc-slider-track-wrap">
+                    <div
+                      className="calc-slider-fill"
+                      style={{ width: `${pct(values[s.id], s.min, s.max)}%` }}
+                    />
+                    <input
+                      type="range"
+                      id={s.id}
+                      min={s.min}
+                      max={s.max}
+                      step={s.step}
+                      value={values[s.id]}
+                      onChange={(e) => updateValue(s.id, +e.target.value)}
+                    />
+                  </div>
                 </div>
               ))}
             </div>
 
-            {/* OUTPUTS — dramatic numbers with lead gate */}
-            <div className={`calc-outputs ${severity}`}>
-              <div className="calc-outputs-grid" aria-hidden="true" />
-              {[
-                { id: 'r1', label: 'Annual hours lost to wasted quoting', value: hrs, sub: 'hours / year on quotes that didn\'t convert', cls: '' },
-                { id: 'r2', label: 'Cost of wasted quoting time', value: cost, sub: 'AUD / year in unrecoverable capacity', cls: 'amber', prefix: '$' },
-                { id: 'r3', label: 'Cost to win each job', value: perj, sub: 'in quoting time per signed project', cls: 'red', prefix: '$' },
-              ].map(({ id, label, value, sub, cls, prefix = '' }, i) => (
-                <div key={id} className="metric-block">
-                  {i > 0 && <div className="metric-rule" />}
-                  <div className="metric">
-                    <div className="metric-label">{label}</div>
-                    <div className={`metric-value-wrap${!unlocked && i > 0 ? ' gated' : ''}`}>
-                      <motion.div
-                        className={`metric-value${cls ? ` ${cls}` : ''}`}
-                        key={value}
-                        initial={{ opacity: 0.7, scale: 0.97 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                      >
-                        {prefix}{fmt(value)}
-                      </motion.div>
-                      {!unlocked && i > 0 && (
-                        <div className="metric-blur-overlay" />
-                      )}
-                    </div>
-                    <div className="metric-sub">{sub}</div>
-                  </div>
-                </div>
-              ))}
-
-              {/* Lead capture gate */}
-              <AnimatePresence>
-                {!unlocked && (
+            {/* Right: Ring + Results/Gate */}
+            <div className="calc-right">
+              <AnimatePresence mode="wait">
+                {!unlocked ? (
                   <motion.div
-                    className="calc-gate"
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -16 }}
-                    transition={{ duration: 0.4 }}
+                    key="locked"
+                    className="calc-locked-view"
+                    initial={{ opacity: 1 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 0.3 }}
                   >
-                    <p className="calc-gate-text">
-                      Enter your details to unlock your full cost breakdown
-                    </p>
-                    <form className="calc-gate-form" onSubmit={handleUnlock}>
-                      <input
-                        type="text"
-                        placeholder="Your name"
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        required
-                      />
-                      <input
-                        type="email"
-                        placeholder="Email address"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        required
-                      />
-                      <input
-                        type="tel"
-                        placeholder="Phone number"
-                        value={formData.phone}
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        required
-                      />
-                      <input
-                        type="text"
-                        placeholder="Company name"
-                        value={formData.company}
-                        onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                        required
-                      />
-                      <input
-                        type="url"
-                        placeholder="Website URL (Optional)"
-                        value={formData.website}
-                        onChange={(e) => setFormData({ ...formData, website: e.target.value })}
-                      />
-                      <button type="submit" className="btn-primary" disabled={submitting}>
-                        {submitting ? 'Calculating...' : 'See My Full Results →'}
-                      </button>
-                    </form>
+                    {/* Ring gauge — the hook */}
+                    <div className="calc-ring-row">
+                      <div className="calc-ring-container">
+                        <svg className="calc-ring-svg" viewBox="0 0 200 200">
+                          <circle cx="100" cy="100" r="90" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
+                          <motion.circle
+                            cx="100" cy="100" r="90"
+                            fill="none"
+                            stroke={severityColor}
+                            strokeWidth="6"
+                            strokeLinecap="round"
+                            strokeDasharray={ringCircumference}
+                            strokeDashoffset={ringOffset}
+                            style={{ transformOrigin: 'center', transform: 'rotate(-90deg)' }}
+                            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                          />
+                        </svg>
+                        <div className="calc-ring-inner">
+                          <span className="calc-ring-label">Your numbers<br />are ready</span>
+                          <div className="calc-ring-lock">🔒</div>
+                        </div>
+                      </div>
+                      <div className="calc-ring-side">
+                        <motion.div
+                          className={`calc-severity-badge ${metrics.severity}`}
+                          key={metrics.severity}
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                        >
+                          {metrics.severity === 'critical' ? '⚠ Critical' :
+                           metrics.severity === 'high' ? '⚡ High impact' :
+                           '📊 Worth reviewing'}
+                        </motion.div>
+                        <p className="calc-ring-tease">
+                          Based on your inputs, we've calculated your annual cost, per-job impact, and what you could save.
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Gated preview — blurred row */}
+                    <div className="calc-gated-preview">
+                      <div className="calc-gated-item">
+                        <span className="calc-gated-label">Hours lost</span>
+                        <span className="calc-gated-blur">▓▓▓</span>
+                      </div>
+                      <div className="calc-gated-item">
+                        <span className="calc-gated-label">Annual cost</span>
+                        <span className="calc-gated-blur">▓▓▓▓▓</span>
+                      </div>
+                      <div className="calc-gated-item">
+                        <span className="calc-gated-label">Per job</span>
+                        <span className="calc-gated-blur">▓▓▓▓</span>
+                      </div>
+                    </div>
+
+                    {/* Gate form */}
+                    <div className="calc-gate">
+                      <p className="calc-gate-text">
+                        Unlock your personalised results
+                      </p>
+                      <ul className="calc-gate-value-list">
+                        <li>Full cost breakdown based on your numbers</li>
+                        <li>What you could save with a structured front-end</li>
+                        <li>A free resource you can action today to start fixing this</li>
+                      </ul>
+                      <form className="calc-gate-form" onSubmit={handleUnlock}>
+                        <div className="calc-gate-row">
+                          <input type="text" placeholder="Your name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
+                          <input type="email" placeholder="Email address" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} required />
+                        </div>
+                        <div className="calc-gate-row">
+                          <input type="tel" placeholder="Phone number" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} required />
+                          <input type="text" placeholder="Company name" value={formData.company} onChange={(e) => setFormData({ ...formData, company: e.target.value })} required />
+                        </div>
+                        <input type="url" placeholder="Website URL (optional)" value={formData.website} onChange={(e) => setFormData({ ...formData, website: e.target.value })} />
+                        <button type="submit" className="btn-primary calc-gate-btn" disabled={submitting}>
+                          {submitting ? 'Calculating...' : 'See My Results →'}
+                        </button>
+                      </form>
+                      <p className="calc-gate-privacy">No spam. No third parties. Just your numbers.</p>
+                    </div>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="unlocked"
+                    className="calc-unlocked-view"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    {/* Ring with real number */}
+                    <div className="calc-ring-row">
+                      <div className="calc-ring-container">
+                        <svg className="calc-ring-svg" viewBox="0 0 200 200">
+                          <circle cx="100" cy="100" r="90" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
+                          <motion.circle
+                            cx="100" cy="100" r="90"
+                            fill="none"
+                            stroke={severityColor}
+                            strokeWidth="6"
+                            strokeLinecap="round"
+                            strokeDasharray={ringCircumference}
+                            strokeDashoffset={ringOffset}
+                            style={{ transformOrigin: 'center', transform: 'rotate(-90deg)' }}
+                            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                          />
+                        </svg>
+                        <div className="calc-ring-inner">
+                          <span className="calc-ring-label">Annual cost of<br />wasted quoting</span>
+                          <motion.div
+                            className="calc-ring-number"
+                            style={{ color: severityColor }}
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ delay: 0.2, duration: 0.5 }}
+                          >
+                            ${fmt(metrics.cost)}
+                          </motion.div>
+                          <span className="calc-ring-sub">AUD / year</span>
+                        </div>
+                      </div>
+                      <div className="calc-ring-side">
+                        <motion.div
+                          className={`calc-severity-badge ${metrics.severity}`}
+                          key={metrics.severity}
+                        >
+                          {metrics.severity === 'critical' ? '⚠ Critical — this is unsustainable' :
+                           metrics.severity === 'high' ? '⚡ High — significant margin drain' :
+                           '📊 Moderate — room to improve'}
+                        </motion.div>
+                      </div>
+                    </div>
+
+                    {/* Revealed metrics */}
+                    <div className="calc-revealed-grid">
+                      <motion.div className="calc-revealed-card" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+                        <span className="calc-revealed-label">Hours lost / year</span>
+                        <span className="calc-revealed-num">{fmt(metrics.hrs)}</span>
+                      </motion.div>
+                      <motion.div className="calc-revealed-card" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
+                        <span className="calc-revealed-label">Cost per job won</span>
+                        <span className="calc-revealed-num amber">${fmt(metrics.perJob)}</span>
+                      </motion.div>
+                      <motion.div className="calc-revealed-card accent-card" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
+                        <span className="calc-revealed-label green">Projected savings</span>
+                        <span className="calc-revealed-num green-text">${fmt(metrics.savedCost)}</span>
+                        <span className="calc-revealed-sub">{fmt(metrics.savedHrs)} hrs recovered · win rate → {metrics.improvedWinRate}%</span>
+                      </motion.div>
+                    </div>
+
+                    {/* Email confirmation */}
+                    <motion.div className="calc-email-confirm" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}>
+                      <span className="calc-email-icon">✉</span>
+                      <p>Your full breakdown + a free resource to start improving today is on its way to <strong>{formData.email}</strong></p>
+                    </motion.div>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -199,7 +305,6 @@ export default function CalculatorSection({ scrollTo }) {
           </div>
         </FadeUp>
 
-        {/* Bottom CTA */}
         <FadeUp delay={0.28}>
           <div className="calc-cta">
             <p className="serif-callout">That number doesn't have to be yours.</p>
@@ -213,10 +318,6 @@ export default function CalculatorSection({ scrollTo }) {
             >
               See What This Looks Like Solved →
             </motion.a>
-            <p className="calc-microcopy">
-              If the numbers are bigger than you expected, book a quick conversation and we will show
-              you how the process works.
-            </p>
           </div>
         </FadeUp>
       </div>

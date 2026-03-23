@@ -2,4 +2,9 @@ node_modules/
 .vite/
 *.log
 .DS_Store
-.claude/
+dist/
+
+# Claude Code — keep skills, launch config, and hooks but NOT sensitive local settings
+.claude/settings.local.json
+prebuild-react/.DS_Store
+public/.DS_Store

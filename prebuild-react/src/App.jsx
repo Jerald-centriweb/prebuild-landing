@@ -28,11 +28,11 @@ export default function App() {
       <SolutionSection scrollTo={scrollTo} />
       <HowItWorks />
       <WhoSection />
+      <FinalCTA scrollTo={scrollTo} />
       <ProofSection />
       <CredibilitySection />
       <FAQSection />
       <GuaranteeSection />
-      <FinalCTA scrollTo={scrollTo} />
       <Footer />
       <SurveyModal />
       <BookingModal />

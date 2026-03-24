@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
+const BOOKING_URL = 'https://app.centriweb.com/v2/preview/f6QpToCuwnyd6VtUcB2z'
+
 export default function BookingModal() {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -11,7 +13,6 @@ export default function BookingModal() {
     return () => window.removeEventListener('open-booking', handleOpen)
   }, [])
 
-  /* Lock body scroll when modal is open */
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
@@ -26,37 +27,31 @@ export default function BookingModal() {
       {isOpen && (
         <motion.div
           key="booking-modal"
-          className="booking-modal-overlay"
+          className="fullscreen-modal-overlay"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
-          onClick={() => setIsOpen(false)}
         >
-          <motion.div
-            className="booking-modal-content"
-            initial={{ opacity: 0, y: 40, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 40, scale: 0.95 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            onClick={(e) => e.stopPropagation()}
+          <button
+            className="fullscreen-modal-close"
+            onClick={() => setIsOpen(false)}
+            aria-label="Close"
           >
-            <div className="booking-modal-header">
-              <div>
-                <h3 className="booking-modal-title">Book a Call</h3>
-                <p className="booking-modal-sub">
-                  Pick a time that works — we'll walk you through how the system fits your business.
-                </p>
-              </div>
-              <button className="booking-close-btn" onClick={() => setIsOpen(false)}>✕</button>
-            </div>
-            <div className="booking-iframe-container">
-              <iframe
-                src="https://app.centriweb.com/v2/preview/BYkk5duBQAbZCbJFgWQY"
-                style={{ border: 'none', width: '100%', height: '100%' }}
-                title="Book a call with PreBuild"
-              />
-            </div>
+            ✕
+          </button>
+          <motion.div
+            className="fullscreen-modal-frame"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 30 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+          >
+            <iframe
+              src={BOOKING_URL}
+              style={{ border: 'none', width: '100%', height: '100%' }}
+              title="Book a call with PreBuild"
+            />
           </motion.div>
         </motion.div>
       )}

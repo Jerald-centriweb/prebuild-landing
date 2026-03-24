@@ -71,7 +71,7 @@ export default function CalculatorSection({ scrollTo }) {
     }, 800)
   }
 
-  const severityColor = metrics.severity === 'critical' ? 'var(--red-400)' : metrics.severity === 'high' ? 'var(--amber-400)' : 'var(--blue-400)'
+  const severityColor = 'var(--blue-400)'
 
   return (
     <section className="calc-section" id="calculator">
@@ -96,7 +96,7 @@ export default function CalculatorSection({ scrollTo }) {
         </div>
 
         <FadeUp delay={0.2}>
-          <div className={`calc-panel ${metrics.severity}`}>
+          <div className="calc-panel">
             {/* Left: Sliders */}
             <div className="calc-sliders">
               {SLIDERS.map((s) => (
@@ -162,38 +162,44 @@ export default function CalculatorSection({ scrollTo }) {
                         </svg>
                         <div className="calc-ring-inner">
                           <span className="calc-ring-label">Your numbers<br />are ready</span>
-                          <div className="calc-ring-lock">🔒</div>
+                          <div className="calc-ring-lock">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}>
+                              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            </svg>
+                          </div>
                         </div>
                       </div>
                       <div className="calc-ring-side">
-                        <motion.div
-                          className={`calc-severity-badge ${metrics.severity}`}
-                          key={metrics.severity}
-                          initial={{ opacity: 0, scale: 0.9 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                        >
-                          {metrics.severity === 'critical' ? '⚠ Critical' :
-                           metrics.severity === 'high' ? '⚡ High impact' :
-                           '📊 Worth reviewing'}
-                        </motion.div>
+                        <div className="calc-severity-badge">
+                          Results ready
+                        </div>
                         <p className="calc-ring-tease">
                           Based on your inputs, we've calculated your annual cost, per-job impact, and what you could save.
                         </p>
                       </div>
                     </div>
 
-                    {/* Gated preview — blurred row */}
+                    {/* Gated preview — hours shown as teaser, rest blurred */}
                     <div className="calc-gated-preview">
-                      <div className="calc-gated-item">
-                        <span className="calc-gated-label">Hours lost</span>
-                        <span className="calc-gated-blur">▓▓▓</span>
+                      <div className="calc-gated-item calc-gated-revealed">
+                        <span className="calc-gated-label">Hours lost / year</span>
+                        <motion.span
+                          className="calc-gated-real"
+                          key={metrics.hrs}
+                          initial={{ opacity: 0.5, y: -4 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          {fmt(metrics.hrs)}
+                        </motion.span>
                       </div>
                       <div className="calc-gated-item">
                         <span className="calc-gated-label">Annual cost</span>
                         <span className="calc-gated-blur">▓▓▓▓▓</span>
                       </div>
                       <div className="calc-gated-item">
-                        <span className="calc-gated-label">Per job</span>
+                        <span className="calc-gated-label">Per job overhead</span>
                         <span className="calc-gated-blur">▓▓▓▓</span>
                       </div>
                     </div>
@@ -265,14 +271,9 @@ export default function CalculatorSection({ scrollTo }) {
                         </div>
                       </div>
                       <div className="calc-ring-side">
-                        <motion.div
-                          className={`calc-severity-badge ${metrics.severity}`}
-                          key={metrics.severity}
-                        >
-                          {metrics.severity === 'critical' ? '⚠ Critical — this is unsustainable' :
-                           metrics.severity === 'high' ? '⚡ High — significant margin drain' :
-                           '📊 Moderate — room to improve'}
-                        </motion.div>
+                        <div className="calc-severity-badge">
+                          Your annual cost
+                        </div>
                       </div>
                     </div>
 
@@ -295,7 +296,12 @@ export default function CalculatorSection({ scrollTo }) {
 
                     {/* Email confirmation */}
                     <motion.div className="calc-email-confirm" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}>
-                      <span className="calc-email-icon">✉</span>
+                      <span className="calc-email-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="2" y="4" width="20" height="16" rx="2" />
+                          <path d="M22 7l-10 7L2 7" />
+                        </svg>
+                      </span>
                       <p>Your full breakdown + a free resource to start improving today is on its way to <strong>{formData.email}</strong></p>
                     </motion.div>
                   </motion.div>

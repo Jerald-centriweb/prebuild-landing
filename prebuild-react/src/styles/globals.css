@@ -272,7 +272,7 @@ body {
 ════════════════════════════════════════════ */
 .hero-container {
   position: relative;
-  height: 350vh;
+  height: 280vh;
 }
 
 .hero-sticky {
@@ -372,7 +372,22 @@ body {
 }
 .hero-sub strong { color: var(--white); font-weight: 500; }
 
-.btn-hero { font-size: 14px; padding: 18px 44px; }
+.btn-hero {
+  font-size: 14px;
+  padding: 20px 48px;
+  box-shadow: 0 4px 24px rgba(47, 127, 212, 0.35), 0 0 0 1px rgba(47, 127, 212, 0.15);
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+.btn-hero:hover {
+  background: var(--blue-600);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 40px rgba(47, 127, 212, 0.5), 0 0 0 1px rgba(47, 127, 212, 0.25);
+}
+.btn-hero:active {
+  transform: scale(0.97) translateY(0);
+  box-shadow: 0 2px 12px rgba(47, 127, 212, 0.3);
+}
 
 .hero-trust {
   display: block;
@@ -382,6 +397,47 @@ body {
   letter-spacing: 0.08em;
   color: rgba(255,255,255,0.45);
   text-transform: uppercase;
+}
+.hero-book-link {
+  display: inline-block;
+  margin-top: 14px;
+  font-family: var(--body);
+  font-size: 14px;
+  color: rgba(255,255,255,0.55);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  padding-bottom: 1px;
+  transition: color 0.2s, border-color 0.2s;
+  cursor: pointer;
+}
+.hero-book-link:hover {
+  color: var(--blue-400);
+  border-color: var(--blue-400);
+}
+
+/* ── Hero CTA block — positioned independently from hero-content transforms ── */
+.hero-cta-block {
+  position: absolute;
+  bottom: 22%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  opacity: 0;
+  animation: heroCTAIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 1.6s forwards;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.hero-cta-hidden {
+  opacity: 0 !important;
+  pointer-events: none;
+  transform: translateY(12px);
+}
+@keyframes heroCTAIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .hero-stats-overlay {
@@ -544,11 +600,13 @@ body {
 .pain-card::before {
   content: '';
   position: absolute;
-  top: 0; left: 0;
-  width: 4px;
-  height: 100%;
-  background: var(--blue-400);
-  opacity: 0;
+  top: 24px;
+  bottom: 24px;
+  left: 0;
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--blue-400) 0%, rgba(47,127,212,0.15) 100%);
+  opacity: 0.6;
   transition: opacity 0.4s;
 }
 
@@ -558,6 +616,7 @@ body {
 
 .pain-card:hover::before {
   opacity: 1;
+  background: linear-gradient(180deg, var(--blue-400) 0%, rgba(47,127,212,0.4) 100%);
 }
 
 .pain-card-num {
@@ -572,13 +631,13 @@ body {
 
 .pain-card-title {
   font-family: var(--display);
-  font-size: clamp(22px, 2.5vw, 32px);
+  font-size: clamp(20px, 1.8vw, 26px);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
   color: var(--white);
-  line-height: 1.1;
-  margin-bottom: 16px;
+  line-height: 1.2;
+  margin-bottom: 14px;
 }
 
 .pain-card-desc {
@@ -815,9 +874,11 @@ body {
   text-transform: uppercase;
   display: inline-block;
 }
-.calc-severity-badge.moderate { background: rgba(47,127,212,0.1); color: var(--blue-400); border: 1px solid rgba(47,127,212,0.2); }
-.calc-severity-badge.high { background: rgba(232,160,32,0.1); color: var(--amber-400); border: 1px solid rgba(232,160,32,0.2); }
-.calc-severity-badge.critical { background: rgba(192,57,43,0.12); color: var(--red-400); border: 1px solid rgba(192,57,43,0.25); }
+.calc-severity-badge {
+  background: rgba(47,127,212,0.1);
+  color: var(--blue-400);
+  border: 1px solid rgba(47,127,212,0.2);
+}
 
 /* Gated preview row */
 .calc-gated-preview {
@@ -851,6 +912,18 @@ body {
   color: rgba(255,255,255,0.08);
   filter: blur(6px);
   user-select: none;
+}
+.calc-gated-revealed {
+  border-color: rgba(47,127,212,0.15);
+  background: rgba(47,127,212,0.06);
+}
+.calc-gated-real {
+  display: block;
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -0.02em;
 }
 
 /* Gate form */
@@ -1811,7 +1884,7 @@ footer {
   .nav-cta { font-size: 11px; padding: 8px 16px; }
   .nav-cta.visible { opacity: 1; transform: translateY(0); }
 
-  .hero-container { height: 250vh; }
+  .hero-container { height: 220vh; }
   .hero-content { padding: 0 24px; }
   .hero-h1 { font-size: clamp(40px, 12vw, 64px); }
   .hero-stats-overlay {
@@ -1874,170 +1947,59 @@ footer {
 }
 
 /* ════════════════════════════════════════════
-   SURVEY MODAL — Apply for Consult pop-up
+   FULLSCREEN MODAL — shared by Survey + Booking
+   No header — GHL pages have their own branding.
+   Just a floating close button over a full-screen iframe.
 ════════════════════════════════════════════ */
-.survey-modal-overlay {
+.fullscreen-modal-overlay {
   position: fixed;
   inset: 0;
   z-index: 9999;
   background: rgba(17, 24, 32, 0.88);
-  backdrop-filter: blur(10px);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: min(24px, 4vw);
-  cursor: pointer;
-}
-.survey-modal-content {
-  position: relative;
-  width: 100%;
-  max-width: min(900px, 92vw);
-  max-height: 92vh;
-  background: var(--white);
-  border-radius: 12px;
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
-  overflow: hidden;
-  cursor: default;
-  display: flex;
-  flex-direction: column;
-}
-.survey-close-btn {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  z-index: 10;
-  width: 40px;
-  height: 40px;
-  border: none;
-  background: var(--steel-100);
-  color: var(--steel-600);
-  font-size: 18px;
-  line-height: 1;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s, color 0.2s;
-}
-.survey-close-btn:hover {
-  background: var(--steel-200);
-  color: var(--slate-900);
-}
-.survey-modal-body {
-  padding: 56px 40px 40px;
-  text-align: center;
-}
-.survey-modal-title {
-  font-family: var(--display);
-  font-size: clamp(28px, 4vw, 36px);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  color: var(--slate-900);
-  margin-bottom: 12px;
-}
-.survey-modal-sub {
-  font-size: 17px;
-  line-height: 1.6;
-  color: var(--steel-600);
-  margin-bottom: 28px;
-  max-width: 420px;
-  margin-left: auto;
-  margin-right: auto;
-}
-.survey-open-btn {
-  display: inline-flex;
-  padding: 18px 40px;
-  font-size: 14px;
-}
-.survey-modal-trust {
-  font-size: 13px;
-  color: var(--steel-400);
-  margin-top: 20px;
-}
-
-/* ════════════════════════════════════════════
-   BOOKING MODAL — Book a Call pop-up
-════════════════════════════════════════════ */
-.booking-modal-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: rgba(17, 24, 32, 0.88);
-  backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   padding: 24px;
-  cursor: pointer;
 }
-.booking-modal-content {
-  position: relative;
-  width: 100%;
-  max-width: 720px;
-  max-height: 90vh;
-  background: var(--white);
-  border-radius: 12px;
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
-  overflow: hidden;
-  cursor: default;
-  display: flex;
-  flex-direction: column;
-}
-.booking-modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 28px 32px 20px;
-  border-bottom: 1px solid var(--steel-200);
-}
-.booking-modal-title {
-  font-family: var(--display);
-  font-size: 24px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.01em;
-  color: var(--slate-900);
-  margin-bottom: 4px;
-}
-.booking-modal-sub {
-  font-size: 14px;
-  font-weight: 300;
-  color: var(--steel-600);
-  line-height: 1.5;
-  max-width: 400px;
-}
-.booking-close-btn {
-  width: 36px;
-  height: 36px;
+.fullscreen-modal-close {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 10001;
+  width: 44px;
+  height: 44px;
   border: none;
-  background: var(--steel-100);
-  color: var(--steel-600);
-  font-size: 18px;
+  background: rgba(17, 24, 32, 0.85);
+  color: rgba(255,255,255,0.8);
+  font-size: 20px;
   line-height: 1;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s, color 0.2s;
-  flex-shrink: 0;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
 }
-.booking-close-btn:hover {
-  background: var(--steel-200);
-  color: var(--slate-900);
+.fullscreen-modal-close:hover {
+  background: rgba(192, 57, 43, 0.9);
+  color: #fff;
+  transform: scale(1.08);
 }
-.booking-iframe-container {
-  flex: 1;
-  min-height: 520px;
-  height: 70vh;
+.fullscreen-modal-frame {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.5);
 }
-.booking-iframe-container iframe {
+.fullscreen-modal-frame iframe {
   border: none;
   width: 100%;
   height: 100%;
   display: block;
+  border-radius: 12px;
 }
 
 /* ── Final CTA: Book a Call button ── */
@@ -2086,12 +2048,7 @@ footer {
   .btn-hero { font-size: 12px; padding: 14px 28px; }
   .calc-slider-value { font-size: 22px; }
   .calc-gate { padding: 20px; }
-  .survey-modal-overlay { padding: 12px; }
-  .survey-modal-content { max-width: 100%; }
-  .survey-modal-body { padding: 48px 24px 32px; }
-  .booking-modal-overlay { padding: 16px; }
-  .booking-modal-content { max-width: 100%; max-height: 88vh; }
-  .booking-modal-header { padding: 20px 20px 16px; }
-  .booking-iframe-container { min-height: 400px; height: 65vh; }
+  .fullscreen-modal-overlay { padding: 12px; }
+  .fullscreen-modal-close { top: 8px; right: 8px; width: 38px; height: 38px; font-size: 16px; }
   .final-cta-group { flex-direction: column; }
 }

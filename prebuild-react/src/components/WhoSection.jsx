@@ -7,7 +7,7 @@ const YES_ITEMS = [
   'Custom homes, renovations, extensions, or design-build',
   'Regularly losing time to unqualified enquiries',
   'Want a stronger front-end process built for you',
-  'Open to asking for a preliminary commitment before you quote',
+  'Already charge for preliminary work — or open to starting',
 ]
 
 const NO_ITEMS = [
@@ -56,7 +56,7 @@ export default function WhoSection() {
         <FadeUp delay={0.16}>
           <p className="who-lead">
             This is a fit if you are regularly dealing with unqualified enquiries, inconsistent
-            follow-up, or too much free quoting before you know who is actually serious.
+            follow-up, or too much time going into quotes before you know who is actually serious.
           </p>
         </FadeUp>
 

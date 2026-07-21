@@ -31,11 +31,13 @@ export default function App() {
       <SolutionSection scrollTo={scrollTo} />
       <HowItWorks />
       <WhoSection />
-      <FinalCTA scrollTo={scrollTo} />
+      <FinalCTA scrollTo={scrollTo} variant="mid" />
       <ProofSection />
       <CredibilitySection />
       <FAQSection />
       <GuaranteeSection />
+      {/* Closing ask, after proof and objection handling have done their work. */}
+      <FinalCTA scrollTo={scrollTo} variant="closing" />
       <Footer />
       <SurveyModal />
       <BookingModal />

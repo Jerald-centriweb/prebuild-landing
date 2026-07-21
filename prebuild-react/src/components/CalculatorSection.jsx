@@ -174,7 +174,7 @@ export default function CalculatorSection({ scrollTo }) {
                           Results ready
                         </div>
                         <p className="calc-ring-tease">
-                          Based on your inputs, we've compiled a custom efficiency report detailing your true cost of free quoting and exactly how to fix it.
+                          Based on your inputs, we've compiled a custom efficiency report detailing what quoting the wrong people is costing you — and exactly how to fix it.
                         </p>
                       </div>
                     </div>
@@ -211,7 +211,7 @@ export default function CalculatorSection({ scrollTo }) {
                       <ul className="calc-gate-value-list">
                         <li>Instant PDF report sent to your email</li>
                         <li>Full cost & leakage breakdown based on your numbers</li>
-                        <li>The 3-step framework to transition to paid preliminary agreements</li>
+                        <li>The 3-step framework for pricing preliminary work — and getting clients to say yes</li>
                       </ul>
                       <form className="calc-gate-form" onSubmit={handleUnlock}>
                         <div className="calc-gate-row">

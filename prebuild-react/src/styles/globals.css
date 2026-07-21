@@ -407,22 +407,41 @@ body {
   color: rgba(255,255,255,0.45);
   text-transform: uppercase;
 }
-.hero-book-link {
-  display: inline-block;
-  margin-top: 16px;
-  font-family: var(--body);
-  font-size: 14px;
-  color: rgba(255,255,255,0.72);
-  text-decoration: none;
-  border-bottom: 1px solid rgba(255,255,255,0.35);
-  padding-bottom: 2px;
-  letter-spacing: 0.01em;
-  transition: color 0.2s, border-color 0.2s;
-  cursor: pointer;
+.hero-cta-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
 }
-.hero-book-link:hover {
-  color: var(--blue-400);
-  border-color: var(--blue-400);
+
+/* Secondary hero CTA — carries real weight beside the primary button
+   instead of the 14px text link it replaced. */
+.btn-hero-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--white);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.28);
+  padding: 16px 30px;
+  border-radius: var(--radius);
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+.btn-hero-secondary:hover {
+  background: rgba(255,255,255,0.09);
+  border-color: rgba(255,255,255,0.55);
+  transform: translateY(-2px);
+}
+.btn-hero-secondary:focus-visible {
+  outline: 2px solid var(--blue-400);
+  outline-offset: 3px;
 }
 
 
@@ -1972,7 +1991,8 @@ footer {
   .hero-cta-inline { align-items: stretch; }
   .hero-cta-inline .btn-hero { justify-content: center; width: 100%; }
   .hero-trust { text-align: center; }
-  .hero-book-link { text-align: center; }
+  .hero-cta-row { flex-direction: column; align-items: stretch; gap: 10px; }
+  .btn-hero-secondary { justify-content: center; padding: 14px 24px; font-size: 12px; }
   .hero-stats-overlay {
     flex-direction: column;
     gap: 32px;

@@ -1,9 +1,18 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 
-export default function FinalCTA({ scrollTo }) {
+/**
+ * Rendered twice on the page:
+ *  - variant="mid"     — after Who It's For, catches builders who are already sold.
+ *                        Loops the undecided back to the calculator.
+ *  - variant="closing" — after the Guarantee, once Proof, Credibility and the FAQ
+ *                        have done their work. Bookends the hero, so the page no
+ *                        longer ends on a footer with nothing to click.
+ */
+export default function FinalCTA({ scrollTo, variant = 'mid' }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-80px 0px' })
+  const isClosing = variant === 'closing'
 
   const container = {
     hidden: {},
@@ -19,7 +28,7 @@ export default function FinalCTA({ scrollTo }) {
   }
 
   return (
-    <section className="final-section" id="final-cta">
+    <section className="final-section" id={isClosing ? 'closing-cta' : 'final-cta'}>
       <div className="final-grid" aria-hidden="true" />
       <motion.div
         ref={ref}
@@ -28,29 +37,39 @@ export default function FinalCTA({ scrollTo }) {
         initial="hidden"
         animate={inView ? 'show' : 'hidden'}
       >
-        <motion.h2 className="final-h2" variants={headlineItem}>
-          Your next enquiry<br />
-          should be <span className="accent">worth</span><br />
-          your time.
-        </motion.h2>
+        {isClosing ? (
+          <motion.h2 className="final-h2" variants={headlineItem}>
+            You already know<br />
+            which quotes were<br />
+            <span className="accent">never</span> going to land.
+          </motion.h2>
+        ) : (
+          <motion.h2 className="final-h2" variants={headlineItem}>
+            Your next enquiry<br />
+            should be <span className="accent">worth</span><br />
+            your time.
+          </motion.h2>
+        )}
 
         <motion.p className="final-sub" variants={item}>
-          Apply for a consult or book a call. We'll look at your current front-end process, show you
-          exactly how the system works for a builder like you, and tell you plainly whether it's the
-          right fit.
+          {isClosing
+            ? 'One conversation. We look at how enquiries reach you today, show you what changes, and tell you plainly whether it is the right fit for your business.'
+            : "Apply for a consult or book a call. We'll look at your current front-end process, show you exactly how the system works for a builder like you, and tell you plainly whether it's the right fit."}
         </motion.p>
 
         <motion.div className="final-cta-group" variants={item}>
-          <motion.a
-            href="#"
+          {/* This opens a modal — it is an action, not navigation, so it is a
+              <button>. It was previously an <a href="#">. */}
+          <motion.button
+            type="button"
             className="btn-primary btn-final"
-            onClick={(e) => { e.preventDefault(); window.dispatchEvent(new Event('open-survey')) }}
+            onClick={() => window.dispatchEvent(new Event('open-survey'))}
             whileHover={{ background: 'var(--blue-600)', y: -2, boxShadow: '0 8px 40px rgba(47,127,212,0.4)' }}
             whileTap={{ scale: 0.97 }}
             transition={{ type: 'spring', stiffness: 400, damping: 20 }}
           >
             Apply for a Consult →
-          </motion.a>
+          </motion.button>
 
           <span className="final-or-divider">or</span>
 
@@ -75,15 +94,19 @@ export default function FinalCTA({ scrollTo }) {
           No obligation · No pitch · Available within 2 business days
         </motion.p>
 
-        <motion.div className="final-loopback" variants={item}>
-          <p>Not ready to book yet?</p>
-          <a
-            href="#calculator"
-            onClick={(e) => { e.preventDefault(); scrollTo('calculator') }}
-          >
-            Or run the calculator first — see what your current process is costing you →
-          </a>
-        </motion.div>
+        {/* Only on the mid-page CTA. By the closing one the visitor has already
+            passed the calculator, so sending them back is a dead end. */}
+        {!isClosing && (
+          <motion.div className="final-loopback" variants={item}>
+            <p>Not ready to book yet?</p>
+            <a
+              href="#calculator"
+              onClick={(e) => { e.preventDefault(); scrollTo('calculator') }}
+            >
+              Or run the calculator first — see what your current process is costing you →
+            </a>
+          </motion.div>
+        )}
       </motion.div>
     </section>
   )

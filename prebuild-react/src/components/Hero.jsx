@@ -137,23 +137,34 @@ export default function Hero({ scrollTo }) {
             </motion.div>
 
             <motion.div className="hero-cta-inline" variants={fadeUpVariant}>
-              <button
-                type="button"
-                className="btn-primary btn-hero"
-                onClick={() => window.dispatchEvent(new Event('open-survey'))}
-              >
-                Apply for a Consult →
-              </button>
+              <div className="hero-cta-row">
+                <button
+                  type="button"
+                  className="btn-primary btn-hero"
+                  onClick={() => window.dispatchEvent(new Event('open-survey'))}
+                >
+                  Apply for a Consult →
+                </button>
+                {/* Was a 14px text link, which lost every fight with the primary
+                    button beside it. Now a real secondary button, matching the
+                    treatment used in the final CTA. */}
+                <button
+                  type="button"
+                  className="btn-hero-secondary"
+                  onClick={() => window.dispatchEvent(new Event('open-booking'))}
+                >
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                    <line x1="16" y1="2" x2="16" y2="6" />
+                    <line x1="8" y1="2" x2="8" y2="6" />
+                    <line x1="3" y1="10" x2="21" y2="10" />
+                  </svg>
+                  Book a Call
+                </button>
+              </div>
               <span className="hero-trust">
                 No hard pitch · 30-day performance guarantee
               </span>
-              <a
-                href="#"
-                className="hero-book-link"
-                onClick={(e) => { e.preventDefault(); window.dispatchEvent(new Event('open-booking')) }}
-              >
-                or book a call instead
-              </a>
             </motion.div>
           </motion.div>
         </motion.div>

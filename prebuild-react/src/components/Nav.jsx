@@ -18,18 +18,27 @@ export default function Nav({ scrollTo }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
     >
-      <a href="#" className="nav-logo">
+      {/* The icon and wordmark are a crossfade pair of the same logo, so the
+          accessible name lives on the link and both images are decorative —
+          otherwise a screen reader announces "PreBuild" twice. */}
+      <a href="#top" className="nav-logo" aria-label="PreBuild — back to top">
         <div className="nav-logo-wrap">
           <motion.img
             src="/images/logo-icon.png"
-            alt="PreBuild"
+            alt=""
+            aria-hidden="true"
+            width={256}
+            height={256}
             className="nav-logo-icon"
             animate={{ opacity: scrolled ? 0 : 1, scale: scrolled ? 0.88 : 1 }}
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
           />
           <motion.img
             src="/images/logo-wordmark.png"
-            alt="PreBuild"
+            alt=""
+            aria-hidden="true"
+            width={800}
+            height={264}
             className="nav-logo-wordmark"
             animate={{ opacity: scrolled ? 1 : 0, scale: scrolled ? 1 : 0.88 }}
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}

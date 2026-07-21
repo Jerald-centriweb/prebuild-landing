@@ -38,6 +38,16 @@ export default function HowItWorks() {
   useEffect(() => {
     const stepEls = stepsRef.current.filter(Boolean)
 
+    // Reduced motion: this section pins the viewport and scrubs through the
+    // steps. Skip all of it — render the steps in their final state so the
+    // content is fully readable without hijacking the scroll.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      gsap.set(stepEls, { opacity: 1, x: 0 })
+      gsap.set(progressRef.current, { scaleY: 1, transformOrigin: 'top center' })
+      if (activeNumRef.current) activeNumRef.current.innerText = `0${STEPS.length}`
+      return
+    }
+
     gsap.set(stepEls, { opacity: 0, x: 32 })
     gsap.set(progressRef.current, { scaleY: 0, transformOrigin: 'top center' })
 

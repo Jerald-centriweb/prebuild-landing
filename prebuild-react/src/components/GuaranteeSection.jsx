@@ -10,6 +10,9 @@ export default function GuaranteeSection() {
   const inView = useInView(sectionRef, { once: true, margin: '-80px 0px' })
 
   useEffect(() => {
+    // Reduced motion: skip the background parallax entirely.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
     const ctx = gsap.context(() => {
       gsap.to(sectionRef.current, {
         backgroundPosition: '0 30px',

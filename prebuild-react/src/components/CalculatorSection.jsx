@@ -215,16 +215,31 @@ export default function CalculatorSection({ scrollTo }) {
                       </ul>
                       <form className="calc-gate-form" onSubmit={handleUnlock}>
                         <div className="calc-gate-row">
-                          <input type="text" placeholder="Your name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
-                          <input type="email" placeholder="Email address" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} required />
+                          <label className="calc-field" htmlFor="calc-name">
+                            <span className="calc-field-label">Name</span>
+                            <input id="calc-name" name="name" type="text" autoComplete="name" placeholder="Dave Thompson" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
+                          </label>
+                          <label className="calc-field" htmlFor="calc-email">
+                            <span className="calc-field-label">Email</span>
+                            <input id="calc-email" name="email" type="email" autoComplete="email" inputMode="email" spellCheck={false} placeholder="dave@yourbuild.com.au" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} required />
+                          </label>
                         </div>
                         <div className="calc-gate-row">
-                          <input type="tel" placeholder="Phone number" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} required />
-                          <input type="text" placeholder="Company name" value={formData.company} onChange={(e) => setFormData({ ...formData, company: e.target.value })} required />
+                          <label className="calc-field" htmlFor="calc-phone">
+                            <span className="calc-field-label">Phone</span>
+                            <input id="calc-phone" name="phone" type="tel" autoComplete="tel" inputMode="tel" placeholder="0412 345 678" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} required />
+                          </label>
+                          <label className="calc-field" htmlFor="calc-company">
+                            <span className="calc-field-label">Company</span>
+                            <input id="calc-company" name="company" type="text" autoComplete="organization" placeholder="Thompson Built" value={formData.company} onChange={(e) => setFormData({ ...formData, company: e.target.value })} required />
+                          </label>
                         </div>
-                        <input type="url" placeholder="Website URL (optional)" value={formData.website} onChange={(e) => setFormData({ ...formData, website: e.target.value })} />
+                        <label className="calc-field" htmlFor="calc-website">
+                          <span className="calc-field-label">Website <em>optional</em></span>
+                          <input id="calc-website" name="website" type="url" autoComplete="url" inputMode="url" spellCheck={false} placeholder="thompsonbuilt.com.au" value={formData.website} onChange={(e) => setFormData({ ...formData, website: e.target.value })} />
+                        </label>
                         <button type="submit" className="btn-primary calc-gate-btn" disabled={submitting}>
-                          {submitting ? 'Generating Report...' : 'Unlock My Custom Report →'}
+                          {submitting ? 'Generating Report…' : 'Unlock My Custom Report →'}
                         </button>
                       </form>
                       <p className="calc-gate-privacy">No spam. No third parties. Just your numbers.</p>

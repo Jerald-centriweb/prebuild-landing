@@ -744,6 +744,13 @@ body {
   cursor: pointer;
   z-index: 2;
 }
+/* outline:none above is replaced with a visible ring on the thumb for keyboard users */
+.calc-slider-track-wrap input[type="range"]:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 4px rgba(47,127,212,0.5);
+}
+.calc-slider-track-wrap input[type="range"]:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 4px rgba(47,127,212,0.5);
+}
 .calc-slider-track-wrap input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 20px; height: 20px;
@@ -967,6 +974,24 @@ body {
   grid-template-columns: 1fr 1fr;
   gap: 8px;
 }
+.calc-field { display: block; }
+.calc-field-label {
+  display: block;
+  margin-bottom: 5px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--steel-400);
+}
+.calc-field-label em {
+  font-style: normal;
+  font-weight: 400;
+  opacity: 0.7;
+  text-transform: none;
+  letter-spacing: 0.04em;
+}
 .calc-gate-form input {
   width: 100%;
   padding: 11px 14px;
@@ -977,10 +1002,16 @@ body {
   font-family: var(--body);
   font-size: 13px;
   outline: none;
-  transition: border-color 0.2s, background 0.2s;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
 }
-.calc-gate-form input::placeholder { color: var(--steel-400); }
+.calc-gate-form input::placeholder { color: var(--steel-400); opacity: 0.55; }
+.calc-gate-form input:hover { border-color: rgba(255,255,255,0.2); }
 .calc-gate-form input:focus { border-color: var(--blue-400); background: rgba(47,127,212,0.06); }
+/* outline:none above is replaced with an explicit, higher-contrast focus ring */
+.calc-gate-form input:focus-visible {
+  border-color: var(--blue-400);
+  box-shadow: 0 0 0 3px rgba(47,127,212,0.45);
+}
 .calc-gate-btn {
   width: 100%;
   justify-content: center;
@@ -1125,7 +1156,7 @@ body {
   grid-template-columns: 1fr 1.3fr;
   gap: 48px;
   align-items: center;
-  transition: all 0.4s ease;
+  transition: transform 0.4s ease, border-color 0.4s ease, background 0.4s ease;
   position: relative;
   overflow: hidden;
 }
@@ -2138,4 +2169,39 @@ footer {
   .final-cta-group { flex-direction: column; align-items: stretch; gap: 12px; }
   .btn-final { justify-content: center; width: 100%; }
   .btn-book-call { justify-content: center; width: 100%; }
+}
+
+
+/* ════════════════════════════════════════════
+   REDUCED MOTION
+   Honours the visitor's OS "reduce motion" setting.
+   Deliberately scoped: we shorten CSS transitions and stop the
+   decorative loops, but never set `animation: none` globally —
+   several reveals start at opacity 0 and would be stranded
+   invisible. JS-driven reveals are handled in App.jsx
+   (MotionConfig) and in the GSAP sections themselves.
+════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  /* Decorative loop: stop the pulse, but leave the cue visible. */
+  .hero-scroll-cue { animation: none !important; opacity: 1 !important; }
+
+  /* The proof marquee scrolls forever — park it and let it wrap instead. */
+  .proof-marquee-track {
+    animation: none !important;
+    transform: none !important;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* Background video is decorative, scroll-scrubbed motion. The hero still
+     reads via the dark surface, blueprint grid, and overlay without it. */
+  .hero-video-bg { display: none !important; }
 }

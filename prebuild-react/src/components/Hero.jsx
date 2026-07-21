@@ -84,7 +84,7 @@ export default function Hero({ scrollTo }) {
   }
 
   return (
-    <section className="hero-container" ref={containerRef}>
+    <section id="top" className="hero-container" ref={containerRef}>
       <div className="hero-sticky">
         {/* Video background */}
         <motion.video

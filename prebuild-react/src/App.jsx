@@ -1,3 +1,4 @@
+import { MotionConfig } from 'framer-motion'
 import Nav from './components/Nav'
 import Hero from './components/Hero'
 import ProblemSection from './components/ProblemSection'
@@ -20,7 +21,9 @@ export default function App() {
   }
 
   return (
-    <>
+    /* reducedMotion="user" makes every Framer Motion animation on the page
+       honour the visitor's OS "reduce motion" setting automatically. */
+    <MotionConfig reducedMotion="user">
       <Nav scrollTo={scrollTo} />
       <Hero scrollTo={scrollTo} />
       <ProblemSection />
@@ -36,6 +39,6 @@ export default function App() {
       <Footer />
       <SurveyModal />
       <BookingModal />
-    </>
+    </MotionConfig>
   )
 }

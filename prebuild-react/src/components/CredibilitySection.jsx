@@ -52,7 +52,7 @@ export default function CredibilitySection() {
             <p>
               PreBuild was designed around the{' '}
               <strong>real quoting and pre-construction bottlenecks</strong> that residential builders
-              face — not the problems that look good in a software brochure.
+              face. Not the problems that look good in a software brochure.
             </p>
           </FadeUp>
 

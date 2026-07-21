@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
-const CONSULT_FORM_URL = 'https://consult.centriweb.com.au'
+const CONSULT_FORM_URL = 'https://app.prebuildsystems.com/widget/survey/WBo99IZgywz7dUmSAa3Q'
 
 export default function SurveyModal() {
   const [isOpen, setIsOpen] = useState(false)

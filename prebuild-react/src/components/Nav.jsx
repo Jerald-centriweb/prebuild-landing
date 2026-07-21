@@ -21,7 +21,7 @@ export default function Nav({ scrollTo }) {
       {/* The icon and wordmark are a crossfade pair of the same logo, so the
           accessible name lives on the link and both images are decorative —
           otherwise a screen reader announces "PreBuild" twice. */}
-      <a href="#top" className="nav-logo" aria-label="PreBuild — back to top">
+      <a href="#top" className="nav-logo" aria-label="PreBuild, back to top">
         <div className="nav-logo-wrap">
           <motion.img
             src="/images/logo-icon.png"

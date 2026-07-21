@@ -4,7 +4,7 @@ import { RevealBlur, FadeUp } from './FadeUp'
 
 const TESTIMONIALS = [
   {
-    quote: "I used to spend Sunday nights quoting people who had already hired someone else. That stopped. Now the ones who get through are actually serious — and they have already put skin in the game before I touch the drawings.",
+    quote: "I used to spend Sunday nights quoting people who had already hired someone else. That stopped. Now the ones who get through are actually serious. They've already put skin in the game before I touch the drawings.",
     name: 'Custom home builder, NSW',
     sub: '12 homes per year · Custom & design-build',
   },

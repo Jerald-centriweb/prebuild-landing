@@ -5,12 +5,12 @@ import { RevealBlur, FadeUp } from './FadeUp'
 const FAQS = [
   {
     q: 'Do I need to change everything I already use?',
-    a: 'No. PreBuild sits in front of your existing estimating or admin process. It structures what happens before serious quoting begins — it does not replace your tools.',
+    a: "No. PreBuild sits in front of your existing estimating or admin process. It structures what happens before serious quoting begins. It doesn't replace your tools.",
     cat: 'system',
   },
   {
     q: 'Is this another CRM I have to learn?',
-    a: 'No. We set it up for you. The goal is less manual follow-up and better lead handling — not more admin on your end. You do not manage any of the back-end.',
+    a: "No. We set it up for you. The goal is less manual follow-up and better lead handling, not more admin on your end. You don't manage any of the back end.",
     cat: 'system',
   },
   {
@@ -25,7 +25,7 @@ const FAQS = [
   },
   {
     q: 'What does this cost?',
-    a: 'Pricing depends on your setup — the number of channels, build type, and complexity of your current process. We cover it in the first conversation so we can give you an accurate number, not a range. There are no surprises after that call.',
+    a: 'Pricing depends on your setup: the number of channels, build type, and how complex your current process is. We cover it in the first conversation so we can give you an accurate number, not a range. There are no surprises after that call.',
     cat: 'getting-started',
   },
 ]

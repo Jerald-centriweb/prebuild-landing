@@ -93,14 +93,14 @@ export default function CalculatorSection({ scrollTo }) {
           </FadeUp>
           <RevealBlur delay={0.08}>
             <h2 className="calc-h2">
-              Pre-Construction<br />
-              Cost Leakage<br />
-              <span className="accent">Audit.</span>
+              What Your<br />
+              Quoting Actually<br />
+              <span className="accent">Costs You.</span>
             </h2>
           </RevealBlur>
           <FadeUp delay={0.16}>
             <p className="calc-lead">
-              Adjust the variables below. The resulting audit report will show you exactly how many hours and dollars you are leaving on the table.
+              Adjust the numbers below. The report shows exactly how many hours and dollars you're losing.
             </p>
           </FadeUp>
         </div>
@@ -185,7 +185,7 @@ export default function CalculatorSection({ scrollTo }) {
                           Results ready
                         </div>
                         <p className="calc-ring-tease">
-                          Based on your inputs, we've compiled a custom efficiency report detailing what quoting the wrong people is costing you — and exactly how to fix it.
+                          Based on your numbers, we've put together a report on what quoting the wrong people is costing you, and how to fix it.
                         </p>
                       </div>
                     </div>
@@ -217,12 +217,12 @@ export default function CalculatorSection({ scrollTo }) {
                     {/* Gate form */}
                     <div className="calc-gate">
                       <p className="calc-gate-text">
-                        Unlock Your Custom Leakage Report
+                        Get Your Full Breakdown
                       </p>
                       <ul className="calc-gate-value-list">
                         <li>Instant PDF report sent to your email</li>
                         <li>Full cost & leakage breakdown based on your numbers</li>
-                        <li>The 3-step framework for pricing preliminary work — and getting clients to say yes</li>
+                        <li>The 3-step framework for pricing preliminary work, and getting clients to say yes</li>
                       </ul>
                       <form className="calc-gate-form" onSubmit={handleUnlock}>
                         <div className="calc-gate-row">
@@ -277,7 +277,7 @@ export default function CalculatorSection({ scrollTo }) {
                           </div>
                         </fieldset>
                         <button type="submit" className="btn-primary calc-gate-btn" disabled={submitting}>
-                          {submitting ? 'Generating Report…' : 'Unlock My Custom Report →'}
+                          {submitting ? 'Generating Report…' : 'Send Me the Report →'}
                         </button>
                       </form>
                       <p className="calc-gate-privacy">No spam. No third parties. Just your numbers.</p>

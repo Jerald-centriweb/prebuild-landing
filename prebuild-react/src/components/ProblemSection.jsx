@@ -6,7 +6,7 @@ const PAIN_POINTS = [
   {
     num: '01',
     title: 'Good leads and bad leads look identical at the start',
-    desc: 'You are quoting on gut feel — and gut feel costs you nights and weekends, year after year with no way to tell the difference upfront.',
+    desc: "You're quoting on gut feel. Gut feel costs you nights and weekends, year after year, with no way to tell the difference upfront.",
   },
   {
     num: '02',
@@ -68,7 +68,7 @@ export default function ProblemSection() {
             </RevealBlur>
             <FadeUp delay={0.2}>
               <p className="problem-lead-dark">
-                By the time you find out who was serious, you have already lost hours you do not get back.
+                By the time you find out who was serious, you've already lost hours you don't get back.
               </p>
             </FadeUp>
           </div>

@@ -50,13 +50,13 @@ export default function GuaranteeSection() {
           Our commitment
         </motion.span>
         <motion.h2 className="guarantee-headline" variants={item}>
-          Your first serious lead through the full process within 30 days of going live — or we go
+          Your first serious lead through the full process within 30 days of going live, or we go
           back in and rebuild until it does.
         </motion.h2>
         <motion.div className="guarantee-divider" variants={item} />
         <motion.p className="guarantee-body" variants={item}>
-          We configure the system, so we own the outcome. This is not a marketing line — it is how
-          we operate. If it does not work in 30 days, we fix it.
+          We configure the system, so we own the outcome. This isn't a marketing line. It's how
+          we operate. If it doesn't work in 30 days, we fix it.
         </motion.p>
       </motion.div>
     </section>

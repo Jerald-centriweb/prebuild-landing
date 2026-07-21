@@ -6,20 +6,20 @@ const OUTCOMES = [
   {
     num: '01',
     before: 'Enquiries sitting unanswered for days',
-    after: 'Every enquiry gets a professional first response — even when you are flat out on site',
-    desc: 'A structured first response fires immediately — so homeowners feel taken care of before you pick up the phone.',
+    after: "Every enquiry gets a professional first response, even when you're flat out on site",
+    desc: 'A structured first response goes out straight away, so homeowners feel looked after before you pick up the phone.',
   },
   {
     num: '02',
     before: 'Spending hours before knowing if it\'s real',
-    after: 'You know which leads are worth your time in the first conversation — not the third',
+    after: 'You know which leads are worth your time in the first conversation, not the third',
     desc: 'Every prospect moves through the same qualification process, so your attention goes to real opportunities from day one.',
   },
   {
     num: '03',
     before: 'Asking for money felt uncomfortable',
-    after: 'The preliminary commitment conversation feels natural — the process earns it for you',
-    desc: 'By the time you ask, the process has already established your value — serious prospects expect it, the rest never make it that far.',
+    after: 'The preliminary commitment conversation feels natural, because the process earns it for you',
+    desc: 'By the time you ask, the process has already established your value. Serious prospects expect it. The rest never make it that far.',
   },
 ]
 

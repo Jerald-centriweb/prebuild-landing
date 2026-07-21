@@ -53,7 +53,7 @@ export default function FinalCTA({ scrollTo, variant = 'mid' }) {
 
         <motion.p className="final-sub" variants={item}>
           {isClosing
-            ? 'One conversation. We look at how enquiries reach you today, show you what changes, and tell you plainly whether it is the right fit for your business.'
+            ? "One conversation. We look at how enquiries reach you today, show you what changes, and tell you plainly whether it's the right fit for your business."
             : "Apply for a consult or book a call. We'll look at your current front-end process, show you exactly how the system works for a builder like you, and tell you plainly whether it's the right fit."}
         </motion.p>
 
@@ -103,7 +103,7 @@ export default function FinalCTA({ scrollTo, variant = 'mid' }) {
               href="#calculator"
               onClick={(e) => { e.preventDefault(); scrollTo('calculator') }}
             >
-              Or run the calculator first — see what your current process is costing you →
+              Or run the calculator first. See what your current process is costing you →
             </a>
           </motion.div>
         )}

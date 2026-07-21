@@ -10,9 +10,9 @@ const HEADLINE_LINES = [
 
 /* ── Stats that reveal after hero content fades ── */
 const STATS = [
-  { num: '40+', unit: 'hrs', label: 'Lost per phantom quote', sub: "At $150/hr — that's $6k per job that goes nowhere" },
+  { num: '40+', unit: 'hrs', label: 'Lost per phantom quote', sub: "At $150/hr, that's $6k a job you never get back" },
   { num: '3,200', unit: '', label: 'AU builders insolvent in 2024', sub: 'Margins under 10%. Every wasted hour is a direct hit.' },
-  { num: '30–60%', unit: '', label: 'Budget gap homeowners carry', sub: 'Discovered at hour 35 — not hour zero.' },
+  { num: '30–60%', unit: '', label: 'Budget gap homeowners carry', sub: 'You find out at hour 35. Not hour zero.' },
 ]
 
 const EASE = [0.16, 1, 0.3, 1]
@@ -130,8 +130,8 @@ export default function Hero({ scrollTo }) {
 
             <motion.div variants={fadeUpVariant}>
               <p className="hero-sub">
-                PreBuild installs a structured front-end process for residential builders so the right
-                leads move forward — and the{' '}
+                PreBuild installs a structured front-end process for residential builders.
+                The right leads move forward. The{' '}
                 <strong>wrong ones stop draining your time.</strong>
               </p>
             </motion.div>

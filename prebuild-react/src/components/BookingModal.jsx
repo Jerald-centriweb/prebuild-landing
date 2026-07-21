@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
-const BOOKING_URL = 'https://book.centriweb.com.au'
+const BOOKING_URL = 'https://app.prebuildsystems.com/widget/booking/Fl5fA1OXQXKCs5dCWyYG'
 
 export default function BookingModal() {
   const [isOpen, setIsOpen] = useState(false)

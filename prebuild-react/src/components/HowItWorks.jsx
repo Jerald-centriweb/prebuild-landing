@@ -15,7 +15,7 @@ const STEPS = [
   {
     num: '02',
     title: 'We build it for your business',
-    desc: 'We configure the workflows, lead handling, and qualification flow around your process. You do not touch anything.',
+    desc: "We configure the workflows, lead handling, and qualification flow around your process. You don't touch anything.",
   },
   {
     num: '03',
@@ -114,7 +114,7 @@ export default function HowItWorks() {
           </RevealBlur>
           <FadeUp delay={0.16}>
             <p className="how-lead">
-              You do not need to build this yourself or learn another complicated system. We configure
+              You don't need to build this yourself or learn another system. We configure
               everything for your business and hand it back to you running.
             </p>
           </FadeUp>

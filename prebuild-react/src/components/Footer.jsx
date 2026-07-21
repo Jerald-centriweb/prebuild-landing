@@ -12,7 +12,7 @@ export default function Footer() {
       animate={inView ? { opacity: 1 } : {}}
       transition={{ duration: 0.6, ease: 'easeOut' }}
     >
-      <a href="#top" className="footer-logo-link" aria-label="PreBuild — back to top">
+      <a href="#top" className="footer-logo-link" aria-label="PreBuild, back to top">
         <img
           src="/images/logo-wordmark.png"
           alt=""

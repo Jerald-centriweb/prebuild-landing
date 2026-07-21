@@ -7,7 +7,7 @@ const YES_ITEMS = [
   'Custom homes, renovations, extensions, or design-build',
   'Regularly losing time to unqualified enquiries',
   'Want a stronger front-end process built for you',
-  'Already charge for preliminary work — or open to starting',
+  'Already charge for preliminary work, or open to starting',
 ]
 
 const NO_ITEMS = [
@@ -55,7 +55,7 @@ export default function WhoSection() {
         </RevealBlur>
         <FadeUp delay={0.16}>
           <p className="who-lead">
-            This is a fit if you are regularly dealing with unqualified enquiries, inconsistent
+            This is a fit if you're regularly dealing with unqualified enquiries, inconsistent
             follow-up, or too much time going into quotes before you know who is actually serious.
           </p>
         </FadeUp>
@@ -65,13 +65,13 @@ export default function WhoSection() {
             items={YES_ITEMS}
             mark="✓"
             markClass="mk-y"
-            title="Right for you if..."
+            title="Right for you"
           />
           <CheckList
             items={NO_ITEMS}
-            mark="—"
+            mark="×"
             markClass="mk-n"
-            title="Not right for you if..."
+            title="Not right for you"
           />
         </div>
       </div>

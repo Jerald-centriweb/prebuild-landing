@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { RevealBlur, FadeUp } from './FadeUp'
+import { sendLead } from '../lib/leadCapture'
 
 const fmt = (n) => Math.round(n).toLocaleString()
 const pct = (val, min, max) => ((val - min) / (max - min)) * 100
@@ -51,30 +52,29 @@ export default function CalculatorSection({ scrollTo }) {
     if (!formData.name || !formData.email || !formData.phone || !formData.charges_for_prelim) return
     setSubmitting(true)
 
-    fetch('https://n8n.centriweb.com/webhook/b74e323d-2237-42d0-87a8-e9c6133f8dd9', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...formData,
-        source: 'prebuild_calculator',
-        // Derived for routing convenience in n8n. "Sometimes" is treated as
-        // paid — those builders already have the conversation, they just are
-        // not consistent, so they belong in the paid nurture, not the
-        // "start charging" one.
-        archetype: formData.charges_for_prelim === 'No' ? 'free_quote' : 'paid_quote',
-        metrics: {
-          quotes_per_year: values.c1,
-          jobs_won: values.c2,
-          hours_per_quote: values.c3,
-          hourly_rate: values.c4,
-          annual_hours_lost: metrics.hrs,
-          annual_cost_lost: metrics.cost,
-          cost_per_job: metrics.perJob,
-          win_rate: metrics.winRate,
-          projected_savings: metrics.savedCost,
-        }
-      }),
-    }).catch((err) => console.error('Webhook failed:', err))
+    // Fire and forget from the visitor's point of view — they should never wait
+    // on our webhook — but sendLead retries and queues, so a failed send is
+    // recovered rather than lost.
+    sendLead({
+      ...formData,
+      source: 'prebuild_calculator',
+      // Derived for routing convenience in n8n. "Sometimes" is treated as
+      // paid: those builders already have the conversation, they are just not
+      // consistent, so they belong in the paid nurture rather than the
+      // "start charging" one.
+      archetype: formData.charges_for_prelim === 'No' ? 'free_quote' : 'paid_quote',
+      metrics: {
+        quotes_per_year: values.c1,
+        jobs_won: values.c2,
+        hours_per_quote: values.c3,
+        hourly_rate: values.c4,
+        annual_hours_lost: metrics.hrs,
+        annual_cost_lost: metrics.cost,
+        cost_per_job: metrics.perJob,
+        win_rate: metrics.winRate,
+        projected_savings: metrics.savedCost,
+      },
+    })
 
     setTimeout(() => {
       setUnlocked(true)

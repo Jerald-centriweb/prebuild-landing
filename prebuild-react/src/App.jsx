@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { MotionConfig } from 'framer-motion'
 import Nav from './components/Nav'
 import Hero from './components/Hero'
@@ -12,10 +13,18 @@ import FAQSection from './components/FAQSection'
 import GuaranteeSection from './components/GuaranteeSection'
 import FinalCTA from './components/FinalCTA'
 import Footer from './components/Footer'
+import { flushQueue, installUnloadFlush } from './lib/leadCapture'
 import SurveyModal from './components/SurveyModal'
 import BookingModal from './components/BookingModal'
 
 export default function App() {
+  // Retry any lead that failed to send on a previous visit, and make a
+  // last-ditch attempt via sendBeacon if the tab closes with one still queued.
+  useEffect(() => {
+    flushQueue()
+    return installUnloadFlush()
+  }, [])
+
   const scrollTo = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }

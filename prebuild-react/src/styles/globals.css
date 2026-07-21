@@ -276,7 +276,11 @@ body {
 ════════════════════════════════════════════ */
 .hero-container {
   position: relative;
-  height: 320vh;
+  /* The scroll choreography completes by ~1800px (stats finish at 1800,
+     content fades 1000-1450). At 320vh on a 900px viewport this ran to
+     2880px, leaving over a full screen of dead scrolling before the next
+     section — which is what pushed the calculator so far down the page. */
+  height: 230vh;
 }
 
 .hero-sticky {
@@ -399,6 +403,27 @@ body {
 .btn-hero:active {
   transform: scale(0.97) translateY(0);
   box-shadow: 0 2px 12px rgba(47, 127, 212, 0.3);
+}
+
+.hero-calc-link {
+  display: inline-block;
+  margin-top: 14px;
+  font-family: var(--body);
+  font-size: 14px;
+  color: rgba(255,255,255,0.62);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.22);
+  padding-bottom: 2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.hero-calc-link:hover {
+  color: var(--blue-400);
+  border-color: var(--blue-400);
+}
+.hero-calc-link:focus-visible {
+  outline: 2px solid var(--blue-400);
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
 .hero-trust {
@@ -2033,7 +2058,7 @@ footer {
   .nav-cta-full { display: none; }
   .nav-cta-short { display: inline; }
 
-  .hero-container { height: 260vh; }
+  .hero-container { height: 250vh; }
   .hero-content { padding: 0 24px; }
   .hero-h1 { font-size: clamp(38px, 11vw, 64px); line-height: 0.96; }
   .hero-cta-inline { align-items: stretch; }

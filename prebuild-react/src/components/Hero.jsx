@@ -165,6 +165,16 @@ export default function Hero({ scrollTo }) {
               <span className="hero-trust">
                 No hard pitch{'\u00A0'}· 30{'\u2011'}day performance guarantee
               </span>
+              {/* Lowest-friction path on the page: no call, no pitch, just
+                  their own numbers. Sits under the trust line so it does not
+                  compete with the two primary CTAs. */}
+              <a
+                href="#calculator"
+                className="hero-calc-link"
+                onClick={(e) => { e.preventDefault(); scrollTo('calculator') }}
+              >
+                Not ready to talk? See what your quoting is costing you →
+              </a>
             </motion.div>
           </motion.div>
         </motion.div>

@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import useEmbedHeight from './useEmbedHeight'
 
 const BOOKING_URL = 'https://app.prebuildsystems.com/widget/booking/Fl5fA1OXQXKCs5dCWyYG'
 
 export default function BookingModal() {
   const [isOpen, setIsOpen] = useState(false)
+  const embedHeight = useEmbedHeight(isOpen)
 
   useEffect(() => {
     const handleOpen = () => setIsOpen(true)
@@ -35,7 +37,7 @@ export default function BookingModal() {
           onClick={() => setIsOpen(false)}
         >
           <motion.div
-            className="modal-card"
+            className="modal-card modal-card--wide"
             initial={{ opacity: 0, y: 40, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.97 }}
@@ -51,10 +53,14 @@ export default function BookingModal() {
                 <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
               </svg>
             </button>
+            {/* The id must match the GoHighLevel widget id — form_embed.js
+                targets the iframe by it to push height updates. */}
             <iframe
+              id="Fl5fA1OXQXKCs5dCWyYG"
+              style={embedHeight ? { height: `${embedHeight}px`, minHeight: 0 } : undefined}
               src={BOOKING_URL}
-              style={{ border: 'none', width: '100%', height: '100%', display: 'block' }}
               title="Book a call with PreBuild"
+              scrolling="no"
               allowFullScreen
             />
           </motion.div>

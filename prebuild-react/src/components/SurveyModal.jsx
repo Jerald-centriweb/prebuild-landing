@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import useEmbedHeight from './useEmbedHeight'
 
 const CONSULT_FORM_URL = 'https://app.prebuildsystems.com/widget/survey/WBo99IZgywz7dUmSAa3Q'
 
 export default function SurveyModal() {
   const [isOpen, setIsOpen] = useState(false)
+  const embedHeight = useEmbedHeight(isOpen)
 
   useEffect(() => {
     const handleOpen = () => setIsOpen(true)
@@ -51,10 +53,14 @@ export default function SurveyModal() {
                 <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
               </svg>
             </button>
+            {/* The id must match the GoHighLevel widget id — form_embed.js
+                targets the iframe by it to push height updates. */}
             <iframe
+              id="WBo99IZgywz7dUmSAa3Q"
+              style={embedHeight ? { height: `${embedHeight}px`, minHeight: 0 } : undefined}
               src={CONSULT_FORM_URL}
-              style={{ border: 'none', width: '100%', height: '100%', display: 'block' }}
               title="Apply for a consult with PreBuild"
+              scrolling="no"
               allowFullScreen
             />
           </motion.div>

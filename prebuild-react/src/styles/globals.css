@@ -2120,22 +2120,33 @@ footer {
   /* Keeps scroll inside the form from chaining to the page behind it. */
   overscroll-behavior: contain;
 }
+/* The card hugs the embedded form rather than forcing a fixed box.
+   GoHighLevel's form_embed.js sets an explicit pixel height on the iframe
+   once the form reports its size; the card grows with it and only scrolls
+   once it would outgrow the viewport. Previously this was a fixed 86vh box,
+   which left a ~500px form stranded in a large empty dark panel. */
 .modal-card {
   position: relative;
   width: 100%;
-  max-width: 1040px;
-  height: min(86vh, 860px);
-  height: min(86dvh, 860px);
-  overflow: hidden;
+  max-width: 680px;
+  height: auto;
+  max-height: 86vh;
+  max-height: 86dvh;
+  overflow-y: auto;
   overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   border-radius: 18px;
-  background: #0d1420;
-  border: 1px solid rgba(255,255,255,0.07);
+  /* White, because both embeds are GoHighLevel forms on a white canvas.
+     A dark card showed as bands around the form. */
+  background: #ffffff;
   box-shadow:
-    0 0 0 1px rgba(47,127,212,0.08),
+    0 0 0 1px rgba(47,127,212,0.10),
     0 32px 80px rgba(0,0,0,0.65),
     0 8px 32px rgba(0,0,0,0.4);
 }
+
+/* The booking calendar needs more horizontal room than a form does. */
+.modal-card--wide { max-width: 940px; }
 .modal-close {
   position: absolute;
   top: 24px;
@@ -2163,8 +2174,10 @@ footer {
 .modal-card iframe {
   border: none;
   width: 100%;
-  height: 100%;
   display: block;
+  /* Fallback only. form_embed.js overrides this with an inline height.
+     If the script is blocked the form is still usable at this height. */
+  min-height: 420px;
 }
 
 /* Tablet: 48px of overlay padding eats too much of a ~800px screen and
@@ -2182,19 +2195,19 @@ footer {
   }
   .modal-card {
     border-radius: 20px 20px 0 0;
-    /* 92vh was the mobile padding bug. On phones `vh` is measured against the
-       viewport WITH the browser chrome hidden, so the sheet ran taller than the
-       visible area and the bottom of the form sat under the URL bar — then
-       jumped as the bar showed and hid. `dvh` tracks the live viewport.
-       The vh line stays first as a fallback for older browsers. */
-    height: 92vh;
-    height: 92dvh;
+    /* Bottom sheet on phones. Height still follows the form, but is capped so
+       a long form scrolls inside the sheet instead of running off screen.
+       `dvh` rather than `vh`: on phones vh is measured against the viewport
+       with browser chrome hidden, so a vh-sized sheet ran past the visible
+       area and jumped as the URL bar showed and hid. */
+    max-height: 92vh;
+    max-height: 92dvh;
     max-width: 100%;
-    border-bottom: none;
     /* Clears the iPhone home indicator so the form's submit button is
        never sitting underneath it. */
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
+  .modal-card--wide { max-width: 100%; }
   .modal-close {
     top: 12px;
     right: 12px;

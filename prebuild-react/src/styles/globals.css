@@ -994,6 +994,49 @@ body {
   gap: 8px;
 }
 .calc-field { display: block; }
+.calc-fieldset { border: 0; padding: 0; margin: 0; position: relative; }
+/* Segmented control. minmax(0,1fr) forces three equal cells — plain 1fr
+   cannot shrink below min-content, so "Sometimes" was stealing the row. */
+.calc-radio-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.calc-radio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 4px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius);
+  background: rgba(255,255,255,0.05);
+  color: var(--steel-400);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+.calc-radio:hover { border-color: rgba(255,255,255,0.28); color: var(--white); }
+/* The native dot is redundant once the whole pill reads as selected, but it
+   stays in the DOM so the control remains a real radio group for keyboard
+   and screen-reader users. */
+.calc-radio input {
+  position: absolute;
+  width: 1px; height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.calc-radio.is-selected {
+  border-color: var(--blue-400);
+  background: rgba(47,127,212,0.16);
+  color: var(--white);
+}
+/* Focus ring stays on :has() — focus IS a real state change, so invalidation
+   fires correctly here, unlike the property-only `checked` case above. */
+.calc-radio:has(input:focus-visible) {
+  box-shadow: 0 0 0 3px rgba(47,127,212,0.45);
+}
 .calc-field-label {
   display: block;
   margin-bottom: 5px;

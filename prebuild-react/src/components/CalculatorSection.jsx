@@ -15,7 +15,13 @@ const SLIDERS = [
 export default function CalculatorSection({ scrollTo }) {
   const [values, setValues] = useState({ c1: 30, c2: 8, c3: 20, c4: 150 })
   const [unlocked, setUnlocked] = useState(false)
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', company: '', website: '' })
+  // `charges_for_prelim` maps 1:1 to the existing GoHighLevel contact field
+  // "Do you currently charge for preliminary/pre-construction work?"
+  // (contact.do_you_currently_charge_for_preliminarypreconstruction_work).
+  // Values must stay exactly Yes / No / Sometimes to match its picklist.
+  // This is what segments a lead into the free-quote vs paid-quote archetype
+  // at the moment of highest intent.
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', company: '', website: '', charges_for_prelim: '' })
   const [submitting, setSubmitting] = useState(false)
 
   const updateValue = (id, val) => setValues((prev) => ({ ...prev, [id]: val }))
@@ -42,7 +48,7 @@ export default function CalculatorSection({ scrollTo }) {
 
   const handleUnlock = (e) => {
     e.preventDefault()
-    if (!formData.name || !formData.email || !formData.phone) return
+    if (!formData.name || !formData.email || !formData.phone || !formData.charges_for_prelim) return
     setSubmitting(true)
 
     fetch('https://n8n.centriweb.com/webhook/b74e323d-2237-42d0-87a8-e9c6133f8dd9', {
@@ -51,6 +57,11 @@ export default function CalculatorSection({ scrollTo }) {
       body: JSON.stringify({
         ...formData,
         source: 'prebuild_calculator',
+        // Derived for routing convenience in n8n. "Sometimes" is treated as
+        // paid — those builders already have the conversation, they just are
+        // not consistent, so they belong in the paid nurture, not the
+        // "start charging" one.
+        archetype: formData.charges_for_prelim === 'No' ? 'free_quote' : 'paid_quote',
         metrics: {
           quotes_per_year: values.c1,
           jobs_won: values.c2,
@@ -238,6 +249,33 @@ export default function CalculatorSection({ scrollTo }) {
                           <span className="calc-field-label">Website <em>optional</em></span>
                           <input id="calc-website" name="website" type="url" autoComplete="url" inputMode="url" spellCheck={false} placeholder="thompsonbuilt.com.au" value={formData.website} onChange={(e) => setFormData({ ...formData, website: e.target.value })} />
                         </label>
+
+                        <fieldset className="calc-field calc-fieldset">
+                          <legend className="calc-field-label">Do you charge for preliminary work today?</legend>
+                          <div className="calc-radio-row">
+                            {['Yes', 'No', 'Sometimes'].map((opt) => (
+                              /* Selected state is driven by React state, not CSS
+                                 :has(). React sets `checked` as a DOM property,
+                                 and :has() invalidation does not reliably fire
+                                 for property-only changes — the selector matches
+                                 but the style never recomputes. */
+                              <label
+                                key={opt}
+                                className={`calc-radio${formData.charges_for_prelim === opt ? ' is-selected' : ''}`}
+                              >
+                                <input
+                                  type="radio"
+                                  name="charges_for_prelim"
+                                  value={opt}
+                                  checked={formData.charges_for_prelim === opt}
+                                  onChange={(e) => setFormData({ ...formData, charges_for_prelim: e.target.value })}
+                                  required
+                                />
+                                <span>{opt}</span>
+                              </label>
+                            ))}
+                          </div>
+                        </fieldset>
                         <button type="submit" className="btn-primary calc-gate-btn" disabled={submitting}>
                           {submitting ? 'Generating Report…' : 'Unlock My Custom Report →'}
                         </button>

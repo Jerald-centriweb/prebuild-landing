@@ -2,7 +2,9 @@
 
 Marketing landing page for **PreBuild**, a lead-qualification system for Australian residential builders.
 
-**Live preview:** `builder.centriweb.com` _(deploy in progress)_
+> **AI assistants:** Edit `prebuild-react/` only. This is the canonical source; it deploys to builder.centriweb.com. See `PROJECT-MAP.md` for the full map.
+
+**Live:** https://builder.centriweb.com
 
 ---
 

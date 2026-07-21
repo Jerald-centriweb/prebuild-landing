@@ -1,5 +1,5 @@
-import { useRef, useState, useEffect } from 'react'
-import { motion, useScroll, useTransform, useMotionValueEvent, useSpring, useMotionValue } from 'framer-motion'
+import { useRef, useState } from 'react'
+import { motion, useScroll, useTransform, useMotionValueEvent, useSpring } from 'framer-motion'
 
 /* ── Headline lines ── */
 const HEADLINE_LINES = [
@@ -22,9 +22,6 @@ export default function Hero({ scrollTo }) {
   const videoRef = useRef(null)
   const [videoReady, setVideoReady] = useState(false)
 
-  /* Track whether CTA should be visible based on scroll */
-  const [ctaVisible, setCtaVisible] = useState(true)
-
   const { scrollY } = useScroll()
   const smoothScroll = useSpring(scrollY, { stiffness: 40, damping: 20, mass: 1 })
 
@@ -42,27 +39,22 @@ export default function Hero({ scrollTo }) {
     }
   })
 
-  /* Hide CTA when hero content fades out */
-  useMotionValueEvent(scrollY, 'change', (v) => {
-    setCtaVisible(v < 800)
-  })
-
-  /* Hero content fade-OUT — starts later so user can read comfortably */
-  const heroContentOpacity = useTransform(scrollY, [800, 1200], [1, 0])
-  const heroContentScale = useTransform(scrollY, [800, 1200], [1, 0.92])
-  const heroContentY = useTransform(scrollY, [800, 1200], [0, -60])
+  /* Hero content fade-OUT — extended hold so content stays readable longer */
+  const heroContentOpacity = useTransform(scrollY, [1000, 1450], [1, 0])
+  const heroContentScale = useTransform(scrollY, [1000, 1450], [1, 0.92])
+  const heroContentY = useTransform(scrollY, [1000, 1450], [0, -60])
 
   /* Video background */
-  const videoScale = useTransform(scrollY, [0, 1800], [1, 1.12])
-  const videoOpacity = useTransform(scrollY, [0, 1200, 1800], [0.35, 0.2, 0.08])
+  const videoScale = useTransform(scrollY, [0, 2000], [1, 1.12])
+  const videoOpacity = useTransform(scrollY, [0, 1400, 2100], [0.35, 0.2, 0.08])
 
-  /* Stats — stagger in tightly as hero content fades */
-  const stat1Opacity = useTransform(scrollY, [1000, 1150], [0, 1])
-  const stat1Y = useTransform(scrollY, [1000, 1150], [30, 0])
-  const stat2Opacity = useTransform(scrollY, [1150, 1300], [0, 1])
-  const stat2Y = useTransform(scrollY, [1150, 1300], [30, 0])
-  const stat3Opacity = useTransform(scrollY, [1300, 1450], [0, 1])
-  const stat3Y = useTransform(scrollY, [1300, 1450], [30, 0])
+  /* Stats — stagger in as hero content fades, generous windows */
+  const stat1Opacity = useTransform(scrollY, [1200, 1400], [0, 1])
+  const stat1Y = useTransform(scrollY, [1200, 1400], [30, 0])
+  const stat2Opacity = useTransform(scrollY, [1400, 1600], [0, 1])
+  const stat2Y = useTransform(scrollY, [1400, 1600], [30, 0])
+  const stat3Opacity = useTransform(scrollY, [1600, 1800], [0, 1])
+  const stat3Y = useTransform(scrollY, [1600, 1800], [30, 0])
 
   const statTransforms = [
     { opacity: stat1Opacity, y: stat1Y },
@@ -109,7 +101,7 @@ export default function Hero({ scrollTo }) {
         <div className="hero-video-overlay" aria-hidden="true" />
         <div className="hero-grid" aria-hidden="true" />
 
-        {/* Hero text — timed entrance, scroll-driven exit */}
+        {/* Hero text + CTA — timed entrance, scroll-driven exit together */}
         <motion.div
           className="hero-content"
           style={{ opacity: heroContentOpacity, scale: heroContentScale, y: heroContentY }}
@@ -143,31 +135,28 @@ export default function Hero({ scrollTo }) {
                 <strong>wrong ones stop draining your time.</strong>
               </p>
             </motion.div>
+
+            <motion.div className="hero-cta-inline" variants={fadeUpVariant}>
+              <button
+                type="button"
+                className="btn-primary btn-hero"
+                onClick={() => window.dispatchEvent(new Event('open-survey'))}
+              >
+                Apply for a Consult →
+              </button>
+              <span className="hero-trust">
+                No hard pitch · 30-day performance guarantee
+              </span>
+              <a
+                href="#"
+                className="hero-book-link"
+                onClick={(e) => { e.preventDefault(); window.dispatchEvent(new Event('open-booking')) }}
+              >
+                or book a call instead
+              </a>
+            </motion.div>
           </motion.div>
         </motion.div>
-
-        {/* CTA block — OUTSIDE hero-content transform chain so clicks always work */}
-        <div className={`hero-cta-block${ctaVisible ? '' : ' hero-cta-hidden'}`}>
-          <button
-            type="button"
-            className="btn-primary btn-hero"
-            onClick={() => window.dispatchEvent(new Event('open-survey'))}
-          >
-            Apply for a Consult →
-          </button>
-
-          <span className="hero-trust">
-            No hard pitch · 30-day performance guarantee
-          </span>
-
-          <a
-            href="#"
-            className="hero-book-link"
-            onClick={(e) => { e.preventDefault(); window.dispatchEvent(new Event('open-booking')) }}
-          >
-            or book a call instead
-          </a>
-        </div>
 
         {/* Stats — revealed after hero content scrolls away */}
         <div className="hero-stats-overlay">

@@ -32,9 +32,9 @@ export function RevealBlur({ children, delay = 0, className = '', style = {}, as
       ref={ref}
       className={className}
       style={style}
-      initial={{ opacity: 0, y: 30, filter: 'blur(8px)' }}
-      animate={inView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {}}
-      transition={{ duration: 0.85, delay, ease: [0.16, 1, 0.3, 1] }}
+      initial={{ opacity: 0, scale: 0.95, y: 40, filter: 'blur(12px)' }}
+      animate={inView ? { opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' } : {}}
+      transition={{ duration: 1.2, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
     </MotionTag>

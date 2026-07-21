@@ -62,7 +62,8 @@ export default function Nav({ scrollTo }) {
         whileTap={{ scale: 0.97 }}
         transition={{ type: 'spring', stiffness: 400, damping: 20 }}
       >
-        Apply for a Consult →
+        <span className="nav-cta-full">Apply for a Consult →</span>
+        <span className="nav-cta-short">Apply →</span>
       </motion.a>
     </motion.nav>
   )

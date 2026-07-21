@@ -68,7 +68,7 @@ export default function CalculatorSection({ scrollTo }) {
     setTimeout(() => {
       setUnlocked(true)
       setSubmitting(false)
-    }, 800)
+    }, 1500)
   }
 
   const severityColor = 'var(--blue-400)'
@@ -82,15 +82,14 @@ export default function CalculatorSection({ scrollTo }) {
           </FadeUp>
           <RevealBlur delay={0.08}>
             <h2 className="calc-h2">
-              See what unqualified<br />
-              quoting is actually<br />
-              <span className="accent">costing you.</span>
+              Pre-Construction<br />
+              Cost Leakage<br />
+              <span className="accent">Audit.</span>
             </h2>
           </RevealBlur>
           <FadeUp delay={0.16}>
             <p className="calc-lead">
-              Adjust the sliders to match your business. The results might change how you
-              look at your next enquiry.
+              Adjust the variables below. The resulting audit report will show you exactly how many hours and dollars you are leaving on the table.
             </p>
           </FadeUp>
         </div>
@@ -161,7 +160,7 @@ export default function CalculatorSection({ scrollTo }) {
                           />
                         </svg>
                         <div className="calc-ring-inner">
-                          <span className="calc-ring-label">Your numbers<br />are ready</span>
+                          <span className="calc-ring-label">Your report<br />is ready</span>
                           <div className="calc-ring-lock">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}>
                               <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
@@ -175,7 +174,7 @@ export default function CalculatorSection({ scrollTo }) {
                           Results ready
                         </div>
                         <p className="calc-ring-tease">
-                          Based on your inputs, we've calculated your annual cost, per-job impact, and what you could save.
+                          Based on your inputs, we've compiled a custom efficiency report detailing your true cost of free quoting and exactly how to fix it.
                         </p>
                       </div>
                     </div>
@@ -207,12 +206,12 @@ export default function CalculatorSection({ scrollTo }) {
                     {/* Gate form */}
                     <div className="calc-gate">
                       <p className="calc-gate-text">
-                        Unlock your personalised results
+                        Unlock Your Custom Leakage Report
                       </p>
                       <ul className="calc-gate-value-list">
-                        <li>Full cost breakdown based on your numbers</li>
-                        <li>What you could save with a structured front-end</li>
-                        <li>A free resource you can action today to start fixing this</li>
+                        <li>Instant PDF report sent to your email</li>
+                        <li>Full cost & leakage breakdown based on your numbers</li>
+                        <li>The 3-step framework to transition to paid preliminary agreements</li>
                       </ul>
                       <form className="calc-gate-form" onSubmit={handleUnlock}>
                         <div className="calc-gate-row">
@@ -225,7 +224,7 @@ export default function CalculatorSection({ scrollTo }) {
                         </div>
                         <input type="url" placeholder="Website URL (optional)" value={formData.website} onChange={(e) => setFormData({ ...formData, website: e.target.value })} />
                         <button type="submit" className="btn-primary calc-gate-btn" disabled={submitting}>
-                          {submitting ? 'Calculating...' : 'See My Results →'}
+                          {submitting ? 'Generating Report...' : 'Unlock My Custom Report →'}
                         </button>
                       </form>
                       <p className="calc-gate-privacy">No spam. No third parties. Just your numbers.</p>
@@ -302,7 +301,7 @@ export default function CalculatorSection({ scrollTo }) {
                           <path d="M22 7l-10 7L2 7" />
                         </svg>
                       </span>
-                      <p>Your full breakdown + a free resource to start improving today is on its way to <strong>{formData.email}</strong></p>
+                      <p>Your custom Cost Leakage Report has been generated and sent to <strong>{formData.email}</strong></p>
                     </motion.div>
                   </motion.div>
                 )}

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
-const BOOKING_URL = 'https://app.centriweb.com/v2/preview/f6QpToCuwnyd6VtUcB2z'
+const BOOKING_URL = 'https://book.centriweb.com.au'
 
 export default function BookingModal() {
   const [isOpen, setIsOpen] = useState(false)
@@ -26,31 +26,36 @@ export default function BookingModal() {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          key="booking-modal"
-          className="fullscreen-modal-overlay"
+          key="booking-overlay"
+          className="modal-overlay"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.22 }}
+          onClick={() => setIsOpen(false)}
         >
-          <button
-            className="fullscreen-modal-close"
-            onClick={() => setIsOpen(false)}
-            aria-label="Close"
-          >
-            ✕
-          </button>
           <motion.div
-            className="fullscreen-modal-frame"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 30 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            className="modal-card"
+            initial={{ opacity: 0, y: 40, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 24, scale: 0.97 }}
+            transition={{ type: 'spring', damping: 28, stiffness: 320, mass: 0.9 }}
+            onClick={(e) => e.stopPropagation()}
           >
+            <button
+              className="modal-close"
+              onClick={() => setIsOpen(false)}
+              aria-label="Close"
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+              </svg>
+            </button>
             <iframe
               src={BOOKING_URL}
-              style={{ border: 'none', width: '100%', height: '100%' }}
+              style={{ border: 'none', width: '100%', height: '100%', display: 'block' }}
               title="Book a call with PreBuild"
+              allowFullScreen
             />
           </motion.div>
         </motion.div>

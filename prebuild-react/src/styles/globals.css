@@ -111,6 +111,9 @@ body {
   color: var(--blue-400);
   display: block;
   margin-bottom: 24px;
+  /* Distributes the two lines evenly at narrow widths instead of leaving a
+     short orphan on line two. */
+  text-wrap: balance;
 }
 
 .eyebrow-tag {
@@ -401,6 +404,8 @@ body {
 .hero-trust {
   display: block;
   margin-top: 20px;
+  /* Stops "GUARANTEE" being stranded alone on its own line at 375px. */
+  text-wrap: balance;
   font-family: var(--mono);
   font-size: 12px;
   letter-spacing: 0.08em;

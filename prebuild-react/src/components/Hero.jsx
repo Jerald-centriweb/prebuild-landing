@@ -112,7 +112,7 @@ export default function Hero({ scrollTo }) {
             animate="show"
           >
             <motion.span className="eyebrow" variants={fadeUpVariant}>
-              For Australian residential builders · 5–30 homes / year
+              For Australian residential builders{'\u00A0'}· 5–30 homes / year
             </motion.span>
 
             <h1 className="hero-h1">
@@ -163,7 +163,7 @@ export default function Hero({ scrollTo }) {
                 </button>
               </div>
               <span className="hero-trust">
-                No hard pitch · 30-day performance guarantee
+                No hard pitch{'\u00A0'}· 30{'\u2011'}day performance guarantee
               </span>
             </motion.div>
           </motion.div>

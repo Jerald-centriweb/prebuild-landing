@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import useEmbedHeight from './useEmbedHeight'
+import { trackBookingOpen } from '../lib/pixel'
 
 const BOOKING_URL = 'https://app.prebuildsystems.com/widget/booking/Fl5fA1OXQXKCs5dCWyYG'
 
@@ -10,7 +11,7 @@ export default function BookingModal() {
   const embedHeight = useEmbedHeight(isOpen)
 
   useEffect(() => {
-    const handleOpen = () => setIsOpen(true)
+    const handleOpen = () => { trackBookingOpen(); setIsOpen(true) }
     window.addEventListener('open-booking', handleOpen)
     return () => window.removeEventListener('open-booking', handleOpen)
   }, [])

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import useEmbedHeight from './useEmbedHeight'
+import { trackConsultOpen } from '../lib/pixel'
 
 const CONSULT_FORM_URL = 'https://app.prebuildsystems.com/widget/survey/WBo99IZgywz7dUmSAa3Q'
 
@@ -10,7 +11,7 @@ export default function SurveyModal() {
   const embedHeight = useEmbedHeight(isOpen)
 
   useEffect(() => {
-    const handleOpen = () => setIsOpen(true)
+    const handleOpen = () => { trackConsultOpen(); setIsOpen(true) }
     window.addEventListener('open-survey', handleOpen)
     return () => window.removeEventListener('open-survey', handleOpen)
   }, [])

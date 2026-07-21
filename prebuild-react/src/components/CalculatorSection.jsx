@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { RevealBlur, FadeUp } from './FadeUp'
 import { sendLead } from '../lib/leadCapture'
+import { trackLead } from '../lib/pixel'
 
 const fmt = (n) => Math.round(n).toLocaleString()
 const pct = (val, min, max) => ((val - min) / (max - min)) * 100
@@ -52,6 +53,9 @@ export default function CalculatorSection({ scrollTo }) {
     if (!formData.name || !formData.email || !formData.phone || !formData.charges_for_prelim) return
     setSubmitting(true)
 
+    const archetype = formData.charges_for_prelim === 'No' ? 'free_quote' : 'paid_quote'
+    trackLead(archetype)
+
     // Fire and forget from the visitor's point of view — they should never wait
     // on our webhook — but sendLead retries and queues, so a failed send is
     // recovered rather than lost.
@@ -62,7 +66,7 @@ export default function CalculatorSection({ scrollTo }) {
       // paid: those builders already have the conversation, they are just not
       // consistent, so they belong in the paid nurture rather than the
       // "start charging" one.
-      archetype: formData.charges_for_prelim === 'No' ? 'free_quote' : 'paid_quote',
+      archetype,
       metrics: {
         quotes_per_year: values.c1,
         jobs_won: values.c2,

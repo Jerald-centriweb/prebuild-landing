@@ -1,7 +1,0 @@
-{
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": "vite",
-  "installCommand": "cd prebuild-react && npm ci",
-  "buildCommand": "cd prebuild-react && npm run build",
-  "outputDirectory": "prebuild-react/dist"
-}

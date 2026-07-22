@@ -51,13 +51,18 @@ export default function HowItWorks() {
     gsap.set(stepEls, { opacity: 0, x: 32 })
     gsap.set(progressRef.current, { scaleY: 0, transformOrigin: 'top center' })
 
+    // The pin exists so the large step number in .how-visual can hold while the
+    // steps scrub past it. That panel is display:none below 768px, so on a
+    // phone the pin buys nothing and costs ~1,120px of hijacked touch scroll.
+    const isDesktop = window.innerWidth > 768
+
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top top',
           end: `+=${stepEls.length * 280}`,
-          pin: true,
+          pin: isDesktop,
           scrub: 0.8,
           anticipatePin: 1,
         },

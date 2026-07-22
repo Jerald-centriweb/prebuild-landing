@@ -122,7 +122,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--blue-400);
+  color: #134E8E;
   background: var(--blue-100);
   padding: 5px 12px;
   border-radius: 3px;
@@ -155,7 +155,9 @@ body {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--white);
-  background: var(--blue-400);
+  /* #2F7FD4 behind white 13px text measures 4.11:1 and fails WCAG AA.
+     --blue-600 measures 6.4:1. blue-400 is kept for large display accents. */
+  background: var(--blue-600);
   padding: 16px 36px;
   border-radius: var(--radius);
   border: none;
@@ -164,7 +166,7 @@ body {
   line-height: 1;
   transition: background 0.2s;
 }
-.btn-primary:hover { background: var(--blue-600); }
+.btn-primary:hover { background: var(--blue-800); }
 .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .btn-ghost {
@@ -258,7 +260,7 @@ body {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--white);
-  background: var(--blue-400);
+  background: var(--blue-600);
   padding: 10px 24px;
   border-radius: var(--radius);
   text-decoration: none;
@@ -267,7 +269,7 @@ body {
   transform: translateY(-4px);
 }
 .nav-cta.visible { opacity: 1; transform: translateY(0); }
-.nav-cta:hover { background: var(--blue-600); }
+.nav-cta:hover { background: var(--blue-800); }
 .nav-cta-short { display: none; }
 
 
@@ -511,7 +513,8 @@ body {
 }
 .hero-stat-sub {
   font-size: 13px;
-  color: var(--steel-600);
+  /* --steel-600 on --slate-900 measures 2.36:1. */
+  color: #96A2AF;
   font-weight: 300;
   line-height: 1.5;
 }
@@ -1611,11 +1614,11 @@ body {
 }
 .proof-marquee-container::before {
   left: 0;
-  background: linear-gradient(to right, var(--bg-white), transparent);
+  background: linear-gradient(to right, var(--white), transparent);
 }
 .proof-marquee-container::after {
   right: 0;
-  background: linear-gradient(to left, var(--bg-white), transparent);
+  background: linear-gradient(to left, var(--white), transparent);
 }
 
 .proof-marquee-track {
@@ -1981,7 +1984,9 @@ body {
   font-size: 12px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.22);
+  /* was 0.22 => 2.1:1. This is the line a sceptical builder reads
+     immediately before clicking, and it was invisible in daylight. */
+  color: rgba(255,255,255,0.62);
 }
 .final-loopback {
   margin-top: 56px;
@@ -2330,4 +2335,83 @@ footer {
   /* Background video is decorative, scroll-scrubbed motion. The hero still
      reads via the dark surface, blueprint grid, and overlay without it. */
   .hero-video-bg { display: none !important; }
+}
+
+
+/* ════════════════════════════════════════════
+   MOBILE CORRECTIONS
+   The existing @media (max-width: 768px) block targets .problem-section,
+   .pain-block and .outcome-row — none of which exist. The components render
+   .problem-section-redesigned, .pain-card and .outcome-card, so those
+   overrides never applied and both sections kept their full 140px desktop
+   padding on a 375px phone. Placed at the end of the file so these win.
+════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .problem-section-redesigned { padding: 72px 0; }
+  .problem-split-layout { gap: 36px; }
+  .problem-cards-right { gap: 20px; }
+  .problem-sticky-left { padding-bottom: 0; }
+
+  /* Touch targets. The calculator is the lowest-friction conversion path on
+     the page and a builder is using it one-handed, outdoors. 44px minimum. */
+  .calc-slider-track-wrap { height: 6px; margin: 14px 0; }
+  .calc-slider-track-wrap input[type="range"] { top: -19px; height: 44px; }
+  .calc-slider-track-wrap input[type="range"]::-webkit-slider-thumb { width: 28px; height: 28px; }
+  .calc-slider-track-wrap input[type="range"]::-moz-range-thumb { width: 28px; height: 28px; }
+  .calc-radio { padding: 15px 4px; font-size: 12px; }
+
+  /* 16px is the threshold below which iOS auto-zooms on focus, which throws
+     the visitor out of the layout mid-form. */
+  .calc-gate-form input { padding: 14px; font-size: 16px; }
+
+  /* The only persistent CTA on a 14,000px page was a 27px tall target. */
+  .nav-cta { font-size: 12px; padding: 16px 18px; line-height: 1; }
+}
+
+
+/* ════════════════════════════════════════════
+   MATERIAL PASS — removing the template signature
+
+   The page carried 11 different border-radius values (2/3/5/8/10/12/14/16/
+   18/20/100px) with no rule behind them, plus frosted-glass panels over a
+   fixed-attachment background image. That combination is the current default
+   look of generated marketing pages, and it is what reads as "AI made" once
+   the copy no longer does.
+
+   Builders read squared, flat, high-contrast surfaces as technical drawings.
+   They read 20px radii and glassmorphism as software marketing.
+════════════════════════════════════════════ */
+
+/* Content cards go flat and square. */
+.pain-card,
+.outcome-card,
+.who-col,
+.proof-card,
+.cred-stat,
+.calc-revealed-card {
+  border-radius: 2px;
+}
+
+.pain-card {
+  background: #161E28;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.outcome-card {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: rgba(10,15,22,0.72);
+}
+
+/* background-attachment: fixed is a parallax cliche, janky on mobile, and
+   ignored by iOS anyway. */
+.solution-section { background-attachment: scroll; }
+
+/* One deliberate off-grid detail. Perfectly even card stacks are part of what
+   makes a page feel machine-laid-out; a drawn set never lines up exactly. */
+@media (min-width: 900px) {
+  .problem-cards-right .pain-card:nth-child(2) { margin-left: -22px; }
 }

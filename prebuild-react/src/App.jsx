@@ -38,14 +38,31 @@ export default function App() {
       <ProblemSection />
       <CalculatorSection scrollTo={scrollTo} />
       <SolutionSection scrollTo={scrollTo} />
-      <HowItWorks />
-      <WhoSection />
-      <FinalCTA scrollTo={scrollTo} variant="mid" />
+
+      {/* Proof and credibility moved ahead of HowItWorks. Everything before
+          this point is PreBuild talking about itself; the reader has to believe
+          it works before he'll care how it works. HowItWorks also pins the
+          viewport, which is a lot of attention to demand before any evidence. */}
       <ProofSection />
       <CredibilitySection />
-      <FAQSection />
+
+      <HowItWorks />
+
+      {/* Who It's For sits after the mechanism. The yes/no list asks the reader
+          to categorise himself; that self-label is only worth something once
+          the thing is credible. Here the "that's me" tick becomes a micro
+          commitment the CTA below can cash in. */}
+      <WhoSection />
+
+      {/* Risk reversal decays with distance from the ask, so the guarantee now
+          sits directly above the first CTA rather than three sections away. */}
       <GuaranteeSection />
-      {/* Closing ask, after proof and objection handling have done their work. */}
+      <FinalCTA scrollTo={scrollTo} variant="mid" />
+
+      {/* Anyone still scrolling past that ask is objecting to something.
+          Objection handling then a second ask ends the page on a resolved
+          doubt rather than a footer. */}
+      <FAQSection />
       <FinalCTA scrollTo={scrollTo} variant="closing" />
       <Footer />
       <SurveyModal />

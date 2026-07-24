@@ -34,6 +34,85 @@
       fbq('track', 'PageView');
     </script>
     <!-- End Meta Pixel -->
+
+    <!-- Structured data. This page is a React SPA, so before JavaScript runs
+         there are 18 words in the HTML. Google renders JS, but most AI
+         crawlers (GPTBot, PerplexityBot, ClaudeBot) do not — and builders
+         increasingly ask an assistant who to talk to. JSON-LD is read without
+         executing anything, so it is how this business becomes describable to
+         them. The FAQ block is also eligible for rich results in Google. -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://prebuildsystems.com/#org",
+          "name": "PreBuild",
+          "legalName": "CentriWeb",
+          "url": "https://prebuildsystems.com",
+          "email": "info@prebuildsystems.com",
+          "description": "PreBuild installs a structured front-end preconstruction process for Australian residential builders, so enquiries are answered fast, qualified consistently, and the right ones move toward a committed next step before detailed quoting begins.",
+          "areaServed": [{ "@type": "Country", "name": "Australia" }],
+          "knowsAbout": [
+            "preconstruction process for residential builders",
+            "paid preliminary agreements",
+            "builder lead qualification",
+            "quote conversion for custom home builders"
+          ]
+        },
+        {
+          "@type": "Service",
+          "name": "PreBuild Autopilot",
+          "provider": { "@id": "https://prebuildsystems.com/#org" },
+          "serviceType": "Preconstruction sales process installation",
+          "areaServed": { "@type": "Country", "name": "Australia" },
+          "audience": {
+            "@type": "Audience",
+            "audienceType": "Australian residential custom home builders building 5 to 30 homes a year"
+          },
+          "description": "A done-for-you front-end process that answers every enquiry immediately, qualifies leads to a consistent standard, and earns the conversation about a paid preliminary agreement before the builder spends hours estimating."
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Is PreBuild another CRM I have to learn?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. PreBuild sits in front of your existing estimating or admin process. It structures what happens before serious quoting begins. It doesn't replace your tools."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Do I need to change everything I already use?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. We set it up for you. The goal is less manual follow-up and better lead handling, not more admin on your end. You don't manage any of the back end."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does this work if I already charge for preliminary work?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Builders who already charge still lose time on enquiries that never become clients, and still lose paid quotes that go quiet. The system handles the front end either way, whether you quote free, charge a preliminary fee, or do both."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How long does it take to set up?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Most setups are live within 10 to 14 business days of the onboarding session. If your situation is more complex we tell you that upfront, before you commit to anything."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <!-- Meta Pixel no-script fallback. Lives here rather than in <head>,
@@ -42,6 +121,34 @@
     <noscript><img height="1" width="1" style="display:none" alt=""
       src="https://www.facebook.com/tr?id=1002615502470181&ev=PageView&noscript=1"
     /></noscript>
+    <!-- Real content for anything that does not execute JavaScript. Not a
+         cloaking trick: it is the same message as the rendered page, and it is
+         what a non-JS crawler or a visitor with JS disabled would otherwise
+         see instead of a blank screen. -->
+    <noscript>
+      <h1>PreBuild — a structured front-end process for Australian residential builders</h1>
+      <p>
+        PreBuild installs a preconstruction process for Australian residential builders
+        building roughly 5 to 30 homes a year. Every enquiry gets answered immediately,
+        every lead is qualified to the same standard, and the conversation about a paid
+        preliminary agreement is earned by the process rather than asked for cold.
+      </p>
+      <p>
+        It works whether you quote for free, charge a preliminary fee, or do both. The
+        problem it solves is not how you price. It is who you are pricing.
+      </p>
+      <h2>What it does</h2>
+      <ul>
+        <li>Answers every enquiry with a structured first response, even when you are on site.</li>
+        <li>Qualifies every lead the same way, so your time goes to real opportunities.</li>
+        <li>Earns the preliminary commitment conversation before you spend hours estimating.</li>
+      </ul>
+      <p>
+        Enable JavaScript to use the quoting cost calculator, or email
+        <a href="mailto:info@prebuildsystems.com">info@prebuildsystems.com</a>.
+      </p>
+      <p><a href="/privacy">Privacy Policy</a> · <a href="/terms">Terms of Use</a></p>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

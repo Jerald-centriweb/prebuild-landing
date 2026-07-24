@@ -24,7 +24,14 @@ export default function Footer() {
           className="footer-logo-img"
         />
       </a>
-      <p className="footer-copy">© 2026 PreBuild · For Australian residential builders</p>
+      <div className="footer-right">
+        <p className="footer-copy">© 2026 PreBuild · For Australian residential builders</p>
+        {/* Meta requires an accessible privacy policy for advertisers, and
+            reviewers check it is linked from the site rather than only
+            reachable by direct URL. Plain <a>, not a router link: /privacy is
+            a static page served outside the React bundle. */}
+        <a className="footer-link" href="/privacy">Privacy Policy</a>
+      </div>
     </motion.footer>
   )
 }

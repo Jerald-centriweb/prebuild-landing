@@ -93,7 +93,13 @@ export default function Hero({ scrollTo }) {
           src="/video/Cinematic_Luxury_Home_Formation_Background.mp4"
           muted
           playsInline
-          preload="auto"
+          /* preload="auto" pulled the full 4.5 MB before anything rendered,
+             which made a decorative background the LCP element. "metadata"
+             fetches enough to know the duration (all the scrub logic needs to
+             initialise) and streams the rest. The poster paints immediately at
+             64 KB, so the hero is never empty. */
+          preload="metadata"
+          poster="/images/luxury_wireframe.png"
           aria-hidden="true"
           onLoadedData={handleVideoLoaded}
           style={{ scale: videoScale, opacity: videoOpacity }}

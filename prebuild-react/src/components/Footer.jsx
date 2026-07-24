@@ -24,13 +24,18 @@ export default function Footer() {
           className="footer-logo-img"
         />
       </a>
+      {/* Meta requires an accessible privacy policy for advertisers, and
+          reviewers check it is linked from the site rather than only reachable
+          by direct URL. A visible contact address is also a legitimacy signal
+          during ad review. Plain <a> tags, not router links: /privacy and
+          /terms are static pages served outside the React bundle. */}
       <div className="footer-right">
         <p className="footer-copy">© 2026 PreBuild · For Australian residential builders</p>
-        {/* Meta requires an accessible privacy policy for advertisers, and
-            reviewers check it is linked from the site rather than only
-            reachable by direct URL. Plain <a>, not a router link: /privacy is
-            a static page served outside the React bundle. */}
-        <a className="footer-link" href="/privacy">Privacy Policy</a>
+        <nav className="footer-links" aria-label="Legal">
+          <a className="footer-link" href="/privacy">Privacy</a>
+          <a className="footer-link" href="/terms">Terms</a>
+          <a className="footer-link" href="mailto:info@prebuildsystems.com">info@prebuildsystems.com</a>
+        </nav>
       </div>
     </motion.footer>
   )

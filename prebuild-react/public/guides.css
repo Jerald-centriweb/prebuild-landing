@@ -1,0 +1,81 @@
+/* Shared stylesheet for the static guide pages.
+   Separate from the app bundle on purpose: these pages must render with no
+   JavaScript and no React, so they carry their own small stylesheet. */
+
+:root{
+  --blue-100:#E6F0FB; --blue-400:#2F7FD4; --blue-600:#1A5FAA; --blue-900:#071F3A;
+  --steel-200:#DDE2E8; --steel-400:#8A96A3; --steel-600:#4A5563; --steel-800:#1E2630;
+  --slate-900:#111820; --white:#fff; --page-bg:#F8F9FB; --amber-400:#E8A020;
+  --display:'Barlow Condensed',sans-serif; --body:'Barlow',sans-serif; --mono:'Space Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);font-size:17px;line-height:1.7;color:var(--steel-800);background:var(--page-bg);-webkit-font-smoothing:antialiased}
+
+.wrap{max-width:760px;margin:0 auto;padding:0 24px}
+
+.bar{background:var(--slate-900);padding:16px 0;border-bottom:1px solid rgba(47,127,212,.2)}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.back{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8FB8E4;text-decoration:none}
+.back:hover{color:#fff}
+.bar-cta{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--blue-600);padding:10px 16px;border-radius:2px;text-decoration:none}
+.bar-cta:hover{background:#124B8C}
+
+main{padding:44px 0 80px}
+.crumbs{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--steel-400);margin-bottom:26px}
+.crumbs a{color:var(--steel-600);text-decoration:none}
+.crumbs a:hover{color:var(--blue-600)}
+.crumbs span{margin:0 6px}
+
+.kicker{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-600);margin-bottom:12px}
+h1{font-family:var(--display);font-size:clamp(34px,6.5vw,54px);font-weight:700;text-transform:uppercase;line-height:1.04;letter-spacing:-.01em;color:var(--slate-900);margin-bottom:16px;text-wrap:balance}
+.standfirst{font-size:20px;line-height:1.55;color:var(--steel-600);margin-bottom:14px;text-wrap:pretty}
+.meta-line{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--steel-400);padding-bottom:28px;border-bottom:1px solid var(--steel-200);margin-bottom:34px}
+
+article h2{font-family:var(--display);font-size:clamp(25px,3.6vw,32px);font-weight:700;text-transform:uppercase;line-height:1.12;color:var(--slate-900);margin:46px 0 14px;padding-top:26px;border-top:1px solid var(--steel-200);text-wrap:balance}
+article h3{font-size:19px;font-weight:600;color:var(--slate-900);margin:30px 0 8px}
+article h4{font-size:16px;font-weight:600;color:var(--steel-600);margin:22px 0 6px}
+article p{margin-bottom:18px;text-wrap:pretty}
+article ul,article ol{margin:0 0 20px 22px}
+article li{margin-bottom:9px}
+article a{color:var(--blue-600)}
+article a:hover{color:var(--slate-900)}
+article strong{font-weight:600;color:var(--slate-900)}
+article code{font-family:var(--mono);font-size:.88em;background:var(--blue-100);padding:2px 5px;border-radius:2px;color:#134E8E}
+
+blockquote{border-left:3px solid var(--amber-400);background:#fff;padding:18px 22px;margin:26px 0}
+blockquote p{margin:0;font-size:18px;line-height:1.6;color:var(--slate-900)}
+
+.scroll{overflow-x:auto;margin:22px 0 26px}
+table{width:100%;border-collapse:collapse;font-size:15px;min-width:460px}
+th,td{text-align:left;padding:11px 13px;border:1px solid var(--steel-200);vertical-align:top}
+th{background:var(--blue-100);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#134E8E}
+
+.cta-block{margin:52px 0 0;padding:32px;background:var(--slate-900);border-radius:2px}
+.cta-block h2{font-family:var(--display);font-size:26px;font-weight:700;text-transform:uppercase;color:#fff;margin-bottom:8px;border:0;padding:0}
+.cta-block p{color:var(--steel-400);font-size:16px;margin-bottom:20px}
+.cta{display:inline-block;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--blue-600);padding:15px 28px;border-radius:2px;text-decoration:none}
+.cta:hover{background:#124B8C}
+
+.related{margin-top:52px;padding-top:28px;border-top:1px solid var(--steel-200)}
+.related h2,main>h2{font-family:var(--display);font-size:24px;font-weight:700;text-transform:uppercase;color:var(--slate-900);margin-bottom:16px}
+.related ul,.guide-list{list-style:none;margin:0 0 34px}
+.related li,.guide-list li{padding:15px 0;border-bottom:1px solid var(--steel-200)}
+.related a,.guide-list a{display:block;font-family:var(--display);font-size:21px;font-weight:600;text-transform:uppercase;color:var(--slate-900);text-decoration:none;line-height:1.2;margin-bottom:4px}
+.related a:hover,.guide-list a:hover{color:var(--blue-600)}
+.related span,.guide-list span{display:block;font-size:15px;color:var(--steel-600);line-height:1.5}
+
+footer{background:var(--blue-900);padding:26px 0;color:rgba(255,255,255,.55);font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+footer a{color:rgba(255,255,255,.75);text-decoration:none}
+footer a:hover{color:#fff}
+
+@media (max-width:600px){
+  body{font-size:16px}
+  main{padding:30px 0 56px}
+  .standfirst{font-size:18px}
+  article h2{margin-top:36px}
+  .cta-block{padding:24px 20px}
+  .cta{display:block;text-align:center}
+  footer .wrap{flex-direction:column;gap:8px}
+}

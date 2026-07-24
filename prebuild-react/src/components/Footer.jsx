@@ -31,7 +31,11 @@ export default function Footer() {
           /terms are static pages served outside the React bundle. */}
       <div className="footer-right">
         <p className="footer-copy">© 2026 PreBuild · For Australian residential builders</p>
-        <nav className="footer-links" aria-label="Legal">
+        <nav className="footer-links" aria-label="Site">
+          {/* Guides must be linked from the app, not just listed in the
+              sitemap. Orphan pages are crawled reluctantly and pass no
+              internal link equity. */}
+          <a className="footer-link" href="/guides">Guides</a>
           <a className="footer-link" href="/privacy">Privacy</a>
           <a className="footer-link" href="/terms">Terms</a>
           <a className="footer-link" href="mailto:info@prebuildsystems.com">info@prebuildsystems.com</a>

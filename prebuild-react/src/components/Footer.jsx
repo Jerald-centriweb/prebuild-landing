@@ -36,6 +36,7 @@ export default function Footer() {
               sitemap. Orphan pages are crawled reluctantly and pass no
               internal link equity. */}
           <a className="footer-link" href="/guides">Guides</a>
+          <a className="footer-link" href="/partners">Partners</a>
           <a className="footer-link" href="/privacy">Privacy</a>
           <a className="footer-link" href="/terms">Terms</a>
           <a className="footer-link" href="mailto:info@prebuildsystems.com">info@prebuildsystems.com</a>

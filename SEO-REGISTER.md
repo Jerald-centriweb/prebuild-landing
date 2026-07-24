@@ -30,13 +30,13 @@ Same format as the House & Land register (`SEO HnL/docs/seo-issues-register.md`)
 | 009 | 🔴 P1 | Trust / E-E-A-T | All five testimonials anonymous. One quotes a "Volume Builder, SA, 30+ homes" while the page lists volume builders under **Not right for you**, and the hero says 5–30 homes | Owner | One named builder, company and suburb. Delete the contradicting quote. Four independent signals now flag this, including a 58/100 persuasion audit where social proof was undetectable |
 | 010 | 🔴 P1 | Legal / delivery | Calculator promises "your report is on its way". Delivery unverified; no n8n workflow is named for it | Owner | Submit the form and confirm. If it does not send, the copy changes in one line. At ad scale this is Fair Trading Act 1986 (NZ) and ACL exposure |
 | 011 | 🟠 P2 | E-E-A-T | Site-wide stats (40+ hrs, 3,200 insolvencies, 30–60% budget gap) carry no sources | Both | Attribute the insolvency figure to ASIC; source or drop the others. House voice requires claims be verifiable |
-| 012 | 🟠 P2 | Content depth | 5 pages across 3 clusters. Competitor runs ~25 long-form posts plus playbooks | Us | Extend to 8–10. Comparison and cost/budget now covered; process/planning and mistakes/disqualification are thinnest |
+| 012 | 🟠 P2 | Content depth | 6 guides across 3 clusters, plus /partners. Competitor runs ~25 long-form posts plus playbooks | Us | Extend to 8–10. All four money categories now have at least one page; mistakes/disqualification is thinnest |
 | ~~013~~ | 🟠 P2 | Content gap | Nothing addressed qualification or the comparison query, which is where the paid-quote archetype searches | Us | ✅ Cluster 2 shipped: qualification pillar + free-vs-paid comparison |
 | 014 | 🟠 P2 | Measurement | No Google Search Console, no analytics beyond the Meta Pixel. Rankings are unmeasured | Owner | GSC property + sitemap submission. See `SEO HnL/docs/GSC-SETUP.md` for the walkthrough |
 | 015 | 🟠 P2 | Social preview | No `og:image`. Every share renders as a bare text card | Both | 1200×630 image. Needs a real project photo (see 016) |
 | 016 | 🟠 P2 | Imagery | Hero interior and wireframe images are AI-generated stock. Australian builders will clock them instantly | Owner | One real photo of a completed client build |
 | 017 | 🟡 P3 | Core Web Vitals | 444 KB JS bundle. LCP target is under 2.5s | Us | ✅ Video no longer preloads 4.5 MB (`preload="metadata"` + 64 KB poster). Bundle splitting still open |
-| 018 | 🟡 P3 | Distribution | No `/partners` page. The estimator referral channel is the single biggest asymmetry and has no landing surface | Us | Partner page, co-branded embeddable calculator, one-page forward asset |
+| 018 | 🟡 P3 | Distribution | No landing surface for the estimator referral channel | Us | ✅ `/partners` shipped. Co-branded embeddable calculator still open |
 | 019 | 🟡 P3 | Security | Repo is public with SSH host, port and username in `CLAUDE.md` | Owner | Make private, rotate the Hostinger password |
 
 ---
@@ -60,9 +60,12 @@ This is deliberately better than the SPA for SEO: the guides need no JavaScript,
 │   ├── /how-to-qualify-building-enquiries        ← pillar
 │   └── /free-quotes-vs-paid-preliminary-agreements
 └── Quote conversion
-    └── /why-builder-quotes-go-quiet              ← needs siblings
+    ├── /why-builder-quotes-go-quiet
+    └── /how-fast-to-respond-to-building-enquiries
+
+/partners  (estimator and referral partner landing page, outside the guide clusters)
 ```
 
 Related-reading links are generated automatically: same category first, pillars weighted up. Verified that each page links to three siblings and that same-cluster pages surface ahead of cross-cluster ones.
 
-`/why-builder-quotes-go-quiet` is currently a single-page cluster. Next content should give it siblings (follow-up sequences, speed to lead) rather than starting a fourth topic.
+Every cluster now has at least two pages, so no page is a lone orphan inside its own topic. Further content should deepen existing clusters rather than start a fourth.

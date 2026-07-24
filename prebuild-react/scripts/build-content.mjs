@@ -331,6 +331,7 @@ function buildSitemap(pages) {
   const fixed = [
     { loc: '/', priority: '1.0', freq: 'weekly', mod: today },
     { loc: '/guides', priority: '0.8', freq: 'weekly', mod: today },
+    { loc: '/partners', priority: '0.8', freq: 'monthly', mod: today },
     { loc: '/privacy', priority: '0.3', freq: 'yearly', mod: '2026-07-24' },
     { loc: '/terms', priority: '0.3', freq: 'yearly', mod: '2026-07-24' },
   ]

@@ -13,6 +13,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://prebuildsystems.com/partners</loc>
+    <lastmod>2026-07-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://prebuildsystems.com/privacy</loc>
     <lastmod>2026-07-24</lastmod>
     <changefreq>yearly</changefreq>
@@ -32,6 +38,12 @@
   </url>
   <url>
     <loc>https://prebuildsystems.com/free-quotes-vs-paid-preliminary-agreements</loc>
+    <lastmod>2026-07-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://prebuildsystems.com/how-fast-to-respond-to-building-enquiries</loc>
     <lastmod>2026-07-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

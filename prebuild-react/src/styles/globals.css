@@ -2721,3 +2721,141 @@ footer {
   .calc-next { flex-direction: column; align-items: stretch; }
   .calc-next .btn-primary { justify-content: center; }
 }
+
+
+/* ════════════════════════════════════════════
+   CALCULATOR — affordance + responsive
+   The archetype options read as static cards, so people scrolled past
+   without realising the page was waiting on an answer. They now carry a
+   radio dot, a hover lift, a resting pulse while unanswered, and an
+   explicit prompt above them.
+════════════════════════════════════════════ */
+
+.calc-prompt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--amber-400);
+}
+.calc-prompt-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--amber-400);
+  flex-shrink: 0;
+  animation: calcPromptPulse 2.2s ease-in-out infinite;
+}
+@keyframes calcPromptPulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(232,160,32,0.5); }
+  50%      { opacity: 0.75; box-shadow: 0 0 0 6px rgba(232,160,32,0); }
+}
+/* Once answered the prompt has done its job. */
+.calc-step-one:not(.is-waiting) .calc-prompt-dot { animation: none; }
+
+.calc-arch {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 13px;
+  min-height: 76px;
+  padding: 17px 18px;
+  position: relative;
+}
+.calc-arch:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.35); }
+.calc-arch:active { transform: translateY(0); }
+
+/* The radio dot is what makes these read as a choice rather than a card. */
+.calc-arch-dot {
+  width: 20px; height: 20px;
+  margin-top: 1px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.4);
+  flex-shrink: 0;
+  position: relative;
+  transition: border-color 0.18s, background 0.18s;
+}
+.calc-arch:hover .calc-arch-dot { border-color: var(--white); }
+.calc-arch.is-on .calc-arch-dot { border-color: var(--blue-400); background: var(--blue-400); }
+.calc-arch.is-on .calc-arch-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--white);
+}
+.calc-arch-text { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.calc-arch-hint { text-wrap: pretty; }
+
+/* While unanswered, the whole step carries a quiet cue that it is live. */
+.calc-step-one.is-waiting { border-left: 3px solid var(--amber-400); }
+.calc-step-one { border-left: 3px solid transparent; transition: border-color 0.4s; }
+
+
+/* ════════════════════════════════════════════
+   RESPONSIVE SYSTEM
+   Four bands rather than a single mobile override: small phone, phone,
+   tablet (iPad portrait is 768 wide and landscape 1024, and both were
+   falling into desktop rules), and desktop.
+════════════════════════════════════════════ */
+
+/* ── Tablet: iPad portrait is exactly 768 CSS px, so the band starts at 700
+   to catch it. The site-wide max-width:768px block above still applies to nav
+   and hero; these rules only govern the calculator. ── */
+@media (min-width: 700px) and (max-width: 1024px) {
+  .wrap, .wrap-md, .wrap-sm, .wrap-lg { padding-left: 40px; padding-right: 40px; }
+
+  .calc-step { padding: 34px 32px; }
+  .calc-grid { grid-template-columns: 1fr 1fr; gap: 22px 30px; }
+  /* Three stat columns are too tight at this width; two reads better. */
+  .calc-out-grid { grid-template-columns: 1fr 1fr; }
+  .calc-out-grid > :last-child { grid-column: 1 / -1; }
+  .calc-cost-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .calc-arch-row { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .calc-arch { flex-direction: column; min-height: 96px; }
+
+  .problem-section-redesigned,
+  .solution-section,
+  .who-section,
+  .proof-section,
+  .faq-section,
+  .calc-section { padding: 96px 0; }
+
+  .hero-container { height: 210vh; }
+}
+
+/* ── Phone ── */
+@media (max-width: 699px) {
+  .calc-arch { min-height: 68px; padding: 15px 16px; }
+  .calc-arch-row { gap: 9px; }
+  .calc-prompt { font-size: 11px; letter-spacing: 0.05em; align-items: flex-start; }
+  .calc-prompt-dot { margin-top: 5px; }
+  .calc-headline-num { font-size: clamp(38px, 12vw, 60px); }
+  .calc-total-num { font-size: clamp(38px, 12vw, 64px); }
+  .calc-out-num { font-size: 34px; }
+  .calc-field-top { align-items: flex-start; }
+  .calc-field-name { font-size: 14px; }
+  .calc-field-val { font-size: 16px; }
+  .calc-step-title { font-size: 20px; }
+  .calc-disclaimer { font-size: 11px; }
+}
+
+/* ── Small phones ── */
+@media (max-width: 400px) {
+  .wrap, .wrap-md, .wrap-sm, .wrap-lg { padding-left: 18px; padding-right: 18px; }
+  .calc-step { padding: 26px 18px; }
+  .calc-headline { padding: 20px 18px; }
+  .calc-total { padding: 22px 18px; }
+  .calc-cost { padding: 20px 17px; }
+  .calc-out { padding: 18px 17px; }
+  .calc-step-head { gap: 11px; }
+  .calc-step-num { padding-right: 11px; }
+  .calc-step-title { font-size: 18px; }
+  /* Stack the label above its value so long labels stop squeezing the figure. */
+  .calc-field-top { flex-direction: column; gap: 4px; }
+}

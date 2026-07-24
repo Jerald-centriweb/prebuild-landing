@@ -35,8 +35,14 @@ export default function App() {
     <MotionConfig reducedMotion="user">
       <Nav scrollTo={scrollTo} />
       <Hero scrollTo={scrollTo} />
-      <ProblemSection />
+
+      {/* The calculator sits directly under the hero. It is the only thing on
+          the page that earns a lead without asking for a call, so it should not
+          be four screens down. It carries its own framing now, so it no longer
+          depends on the Problem section arriving first. */}
       <CalculatorSection scrollTo={scrollTo} />
+
+      <ProblemSection />
       <SolutionSection scrollTo={scrollTo} />
 
       {/* Proof and credibility moved ahead of HowItWorks. Everything before

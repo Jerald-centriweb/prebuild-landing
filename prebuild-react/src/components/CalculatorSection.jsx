@@ -98,26 +98,41 @@ export default function CalculatorSection({ scrollTo }) {
         <FadeUp delay={0.2}>
           <div className="calc-shell">
 
-            {/* STEP 1 — the switch */}
-            <div className="calc-step">
+            {/* STEP 1 — the switch.
+                These read as static cards unless they are given real button
+                affordance: a radio dot, a hover lift, and an explicit prompt.
+                Without it people scroll past without realising the page is
+                waiting on them, and this is the only free lead capture we have. */}
+            <div className={`calc-step calc-step-one${charges ? '' : ' is-waiting'}`}>
               <div className="calc-step-head">
                 <span className="calc-step-num">01</span>
                 <h3 className="calc-step-title">Do you charge for preliminary work?</h3>
               </div>
-              <div className="calc-arch-row">
+
+              <p className="calc-prompt">
+                <span className="calc-prompt-dot" aria-hidden="true" />
+                Pick one to start. Takes about 30 seconds, no email needed to see your number.
+              </p>
+
+              <div className="calc-arch-row" role="radiogroup" aria-label="Do you charge for preliminary work?">
                 {ARCHETYPES.map((a) => (
                   <button
                     key={a.value}
                     type="button"
+                    role="radio"
                     className={`calc-arch${charges === a.value ? ' is-on' : ''}`}
                     onClick={() => setCharges(a.value)}
-                    aria-pressed={charges === a.value}
+                    aria-checked={charges === a.value}
                   >
-                    <span className="calc-arch-label">{a.label}</span>
-                    <span className="calc-arch-hint">{a.hint}</span>
+                    <span className="calc-arch-dot" aria-hidden="true" />
+                    <span className="calc-arch-text">
+                      <span className="calc-arch-label">{a.label}</span>
+                      <span className="calc-arch-hint">{a.hint}</span>
+                    </span>
                   </button>
                 ))}
               </div>
+
               {charges && (
                 <p className="calc-step-note">
                   {model === 'paid_quote'

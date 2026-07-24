@@ -2444,3 +2444,280 @@ footer {
 @media (min-width: 900px) {
   .problem-cards-right .pain-card:nth-child(2) { margin-left: -22px; }
 }
+
+
+/* ════════════════════════════════════════════
+   CALCULATOR — rebuilt
+
+   Reads as measuring instrumentation rather than a marketing widget:
+   monospace tabular figures, square corners, thin technical rules, and
+   step numbers set like drawing references. That is the language this
+   audience already trusts, and it is what "futuristic" should mean for a
+   preconstruction brand — precise, not neon.
+
+   Supersedes the .calc-panel / .calc-sliders / .calc-right / .calc-ring
+   rules further up, which are now unused.
+════════════════════════════════════════════ */
+
+.calc-shell {
+  background: #0F161F;
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.calc-step { padding: 40px 44px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+.calc-step-last { border-bottom: 0; }
+
+.calc-step-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 22px; }
+.calc-step-num {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--blue-400);
+  padding-right: 14px;
+  border-right: 1px solid rgba(47,127,212,0.35);
+  flex-shrink: 0;
+}
+.calc-step-title {
+  font-family: var(--display);
+  font-size: clamp(21px, 2.4vw, 27px);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.005em;
+  line-height: 1.1;
+  color: var(--white);
+}
+.calc-step-note {
+  margin-top: 16px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--steel-400);
+  max-width: 62ch;
+}
+
+/* ── Step 1: the archetype switch ── */
+.calc-arch-row { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; }
+.calc-arch {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 18px 16px;
+  text-align: left;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: border-color 0.18s, background 0.18s;
+}
+.calc-arch:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); }
+.calc-arch.is-on { border-color: var(--blue-400); background: rgba(47,127,212,0.14); }
+.calc-arch:focus-visible { outline: 2px solid var(--blue-400); outline-offset: 3px; }
+.calc-arch-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+.calc-arch-hint { font-size: 13px; line-height: 1.4; color: var(--steel-400); }
+
+/* ── Step 2: inputs ── */
+.calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px 40px; }
+.calc-field-row { min-width: 0; }
+.calc-field-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+.calc-field-name { font-size: 15px; color: var(--steel-200); line-height: 1.35; }
+.calc-field-val {
+  font-family: var(--mono);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--white);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.calc-track { position: relative; height: 4px; background: rgba(255,255,255,0.09); }
+.calc-track-fill { position: absolute; inset: 0 auto 0 0; background: var(--blue-400); }
+.calc-track input[type="range"] {
+  position: absolute;
+  top: -20px; left: 0;
+  width: 100%; height: 44px;
+  margin: 0;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+.calc-track input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 5px solid var(--blue-600);
+  cursor: pointer;
+}
+.calc-track input[type="range"]::-moz-range-thumb {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 5px solid var(--blue-600);
+  cursor: pointer;
+}
+.calc-track input[type="range"]:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px rgba(47,127,212,0.5); }
+
+/* ── The ungated headline figure ── */
+.calc-headline {
+  margin-top: 36px;
+  padding: 30px 32px;
+  background: rgba(47,127,212,0.08);
+  border: 1px solid rgba(47,127,212,0.3);
+  border-left: 3px solid var(--blue-400);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.calc-headline-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8FB8E4;
+}
+.calc-headline-num {
+  font-family: var(--display);
+  font-size: clamp(44px, 7vw, 76px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.015em;
+  color: var(--white);
+  font-variant-numeric: tabular-nums;
+}
+.calc-headline-sub { font-size: 15px; color: var(--steel-400); line-height: 1.5; }
+
+/* ── Step 3: results ── */
+.calc-out-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1px; background: rgba(255,255,255,0.09); margin-bottom: 28px; }
+.calc-out { background: #0F161F; padding: 22px 20px; display: flex; flex-direction: column; gap: 7px; }
+.calc-out-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--steel-400);
+}
+.calc-out-num {
+  font-family: var(--display);
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--white);
+  font-variant-numeric: tabular-nums;
+}
+.calc-out-num.is-short { color: var(--amber-400); }
+.calc-out-num.is-ok { color: #4FB07A; }
+.calc-out-work {
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.55;
+  color: var(--steel-600);
+  word-break: break-word;
+}
+
+.calc-cost-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+.calc-cost {
+  padding: 24px 22px;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.calc-cost-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8FB8E4;
+}
+.calc-cost-num {
+  font-family: var(--display);
+  font-size: clamp(30px, 4vw, 40px);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--white);
+  font-variant-numeric: tabular-nums;
+}
+.calc-cost-means { font-size: 14px; line-height: 1.55; color: var(--steel-400); margin-top: 2px; }
+
+.calc-total {
+  padding: 34px 32px;
+  background: linear-gradient(135deg, rgba(232,160,32,0.10), rgba(232,160,32,0.02));
+  border: 1px solid rgba(232,160,32,0.4);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.calc-total-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--amber-400);
+}
+.calc-total-num {
+  font-family: var(--display);
+  font-size: clamp(46px, 8vw, 84px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.015em;
+  color: var(--white);
+  font-variant-numeric: tabular-nums;
+}
+.calc-total-sub { font-size: 15px; line-height: 1.6; color: var(--steel-200); max-width: 62ch; }
+
+.calc-next {
+  margin-top: 28px;
+  padding-top: 26px;
+  border-top: 1px solid rgba(255,255,255,0.09);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.calc-next p { font-size: 15px; color: var(--steel-400); margin: 0; }
+
+.calc-disclaimer {
+  margin-top: 20px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--steel-600);
+  max-width: 68ch;
+}
+
+@media (max-width: 900px) {
+  .calc-step { padding: 32px 24px; }
+  .calc-grid { grid-template-columns: 1fr; gap: 24px; }
+  .calc-arch-row { grid-template-columns: 1fr; }
+  .calc-arch { flex-direction: row; align-items: baseline; gap: 10px; padding: 15px 16px; }
+  .calc-out-grid { grid-template-columns: 1fr; }
+  .calc-cost-grid { grid-template-columns: 1fr; gap: 14px; }
+  .calc-headline { padding: 24px 22px; }
+  .calc-total { padding: 26px 22px; }
+  .calc-next { flex-direction: column; align-items: stretch; }
+  .calc-next .btn-primary { justify-content: center; }
+}
